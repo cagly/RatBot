@@ -54,11 +54,7 @@ public class MessageHandler {
                     if (cheese) {
                         cheeseHandler(event);
                     }
-                    if (!isAuthorAdmin(event)) {
-                        if (xdIllegal) {
-                            manageIllegalMessage(event);
-                        }
-                    }
+                    manageIllegalMessage(event);
                 }
             }
         } catch (Exception e) {
@@ -72,7 +68,11 @@ public class MessageHandler {
         for (char c : chars) {
             if (xFound) {
                 if (secondHalfUni.contains(String.format("U+%04X", (int) c))) {
-                    event.getMessage().delete().queue();
+                    if (xdIllegal && !isAuthorAdmin(event)) {
+                        event.getMessage().delete().queue();
+                    } else {
+                        event.getMessage().getChannel().sendMessage("xd").queue();
+                    }
                     return;
                 }
             }
