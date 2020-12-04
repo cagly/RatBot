@@ -12,6 +12,11 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.annotation.Nonnull;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +26,8 @@ import java.util.logging.Logger;
 
 public class Bot extends ListenerAdapter {
 
-    List<String> illegalMessages = new ArrayList<>();
+    BotToken botToken;
+    MessageHandler messageHandler = new MessageHandler();
 
     public static void main(String[] args) throws Exception {
         List<GatewayIntent> intentList = new ArrayList<>();
@@ -30,38 +36,13 @@ public class Bot extends ListenerAdapter {
         intentList.add(GatewayIntent.GUILD_PRESENCES);
         Bot bot = new Bot();
         JDA jda = JDABuilder.createDefault(
-                "Nzg0Mzk3MDUwNjczNDk2MDc0.X8osrg.ErY7oMOINGOTi1IVNk7JidGoJ5Y", intentList).build();
+                BotToken.TOKEN, intentList).build();
         jda.addEventListener(bot);
-        bot.generateIllegalMessages();
-    }
-
-    private void generateIllegalMessages() {
-        List<String> firstHalf = Arrays.asList("><", "x", "X", "Х","х","Ӽ", "ӽ", "Ӿ", "ӿ");
-        List<String> secondHalf = Arrays.asList("\u0110", "þ", "Ď", "\u0111", "\u00d0", "đ", "Ɖ","Ɗ"
-                    ,"Ƣ", "ǳ", "ǲ", "Ǳ", "Ƿ", "Ɋ","ɋ","q", "Ḋ","ḋ", "Ϸ", "D", "d", "ϸ", "ь");
-        for (String first : firstHalf) {
-            for (String second : secondHalf) {
-                illegalMessages.add(first+second);
-            }
-        }
     }
 
     @Override
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
-        String msg = event.getMessage().getContentRaw();
-        System.out.println(msg);
-        try {
-            if (msg.contains("cheese")) {
-                event.getMessage().addReaction("U+1F9C0").queue();
-            }
-            for (String illeg : illegalMessages) {
-                if (msg.contains(illeg)) {
-                    event.getMessage().delete().queue();
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("GuildMessageReceived error with message: " + msg);
-        }
+        messageHandler.onGuildMessageReceived(event);
         super.onGuildMessageReceived(event);
     }
 
