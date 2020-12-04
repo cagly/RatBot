@@ -28,24 +28,6 @@ public class MessageHandler {
     Boolean xdIllegal = false;
     Boolean cheese = false;
 
-    private void manageIllegalMessage(@Nonnull GuildMessageReceivedEvent event) {
-        char[] chars = event.getMessage().getContentRaw().replaceAll(illegalStringSeperators, "").toCharArray();
-        boolean xFound = false;
-        for (char c : chars) {
-            if (xFound) {
-                if (secondHalfUni.contains(String.format("U+%04X", (int) c))) {
-                    event.getMessage().delete().queue();
-                    return;
-                }
-            }
-            if (firstHalfUni.contains(String.format("U+%04X", (int) c))) {
-                xFound = true;
-            } else {
-                xFound = false;
-            }
-        }
-    }
-
     public boolean isAuthorAdmin(@Nonnull GuildMessageReceivedEvent event) {
         return (admins.contains(event.getAuthor().getId()));
     }
@@ -79,7 +61,26 @@ public class MessageHandler {
         }
     }
 
+    private void manageIllegalMessage(@Nonnull GuildMessageReceivedEvent event) {
+        char[] chars = event.getMessage().getContentRaw().replaceAll(illegalStringSeperators, "").toCharArray();
+        boolean xFound = false;
+        for (char c : chars) {
+            if (xFound) {
+                if (secondHalfUni.contains(String.format("U+%04X", (int) c))) {
+                    event.getMessage().delete().queue();
+                    return;
+                }
+            }
+            if (firstHalfUni.contains(String.format("U+%04X", (int) c))) {
+                xFound = true;
+            } else {
+                xFound = false;
+            }
+        }
+    }
+
     private void commandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
+        System.out.println(message);
         if (isAuthorAdmin(event)) {
             adminCommandHandler(message, event);
         }
@@ -95,16 +96,17 @@ public class MessageHandler {
             xdIllegal = true;
             event.getMessage().getChannel().sendMessage("'xd' has been prohibited.").queue();
             System.out.println("'xd' has been prohibited.");
-        } else if (message.substring(0,4).equals("mute")) {
+        } else if (message.length() >= 4 && message.substring(0,4).equals("mute")) {
             String id = message.substring(8, message.length() - 1);
             System.out.println("Added " + id + " to muteds.");
             if (muteds.add(id))
                 event.getMessage().getChannel().sendMessage("<@" + id + "> has been muted.").queue();
-        } else if (message.substring(0,6).equals("unmute")) {
+        } else if (message.length() >= 6 && message.substring(0,6).equals("unmute")) {
             String id = message.substring(10, message.length() - 1);
             System.out.println("Removed " + id + " from muteds.");
-            if (muteds.remove(id))
+            if (muteds.remove(id)) {
                 event.getMessage().getChannel().sendMessage("<@" + id + "> has been unmuted.").queue();
+            }
         }
     }
 
@@ -121,6 +123,8 @@ public class MessageHandler {
         } else if (message.equals("uncheese")) {
             cheese = false;
             event.getMessage().getChannel().sendMessage("Cheese deactivated").queue();
+        }  else if (message.equals("code")) {
+            event.getMessage().getChannel().sendMessage("https://github.com/cagly/SlaveBot").queue();
         }
     }
 
