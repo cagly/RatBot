@@ -80,7 +80,6 @@ public class MessageHandler {
     }
 
     private void commandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
-        System.out.println(message);
         if (isAuthorAdmin(event)) {
             adminCommandHandler(message, event);
         }
