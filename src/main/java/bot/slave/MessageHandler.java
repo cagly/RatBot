@@ -1,12 +1,11 @@
 package bot.slave;
 
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.ISnowflake;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.utils.MiscUtil;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +15,7 @@ public class MessageHandler {
     List<String> firstHalfUni = Arrays.asList("U+0078", "U+0058", "U+0425","U+0445","U+04FC", "U+04FD", "U+04FE", "U+04FF");
 //    List<String> firstHalf = Arrays.asList("x", "X", "Х","х","Ӽ", "ӽ", "Ӿ", "ӿ");
 //    List<String> secondHalf = Arrays.asList("Ð", "þ", "Ď", "ď", "Đ", "đ", "Ɖ","Ɗ"
-//        ,"Ƣ", "ǳ", "ǲ", "Ǳ", "Ƿ", "Ɋ","ɋ","q", "Ḋ","ḋ", "Ϸ", "D", "d", "ϸ", "ь");
+//          ,"Ƣ", "ǳ", "ǲ", "Ǳ", "Ƿ", "Ɋ","ɋ","q", "Ḋ","ḋ", "Ϸ", "D", "d", "ϸ", "ь");
     List<String> secondHalfUni = Arrays.asList("U+0044", "U+0064", "U+00D0", "U+00FE", "U+010E", "U+010F",
             "U+0110", "U+0111", "U+0189", "U+018A", "U+01A2", "U+01F3", "U+01F2", "U+01F1", "U+01F7",
             "U+024A", "U+024B", "U+0071", "U+1E0A", "U+1E0B", "U+03F7", "U+03F8", "U+044C");
@@ -27,6 +26,12 @@ public class MessageHandler {
     HashSet<String> cheeseList = new HashSet<>();
     Boolean xdIllegal = false;
     Boolean cheese = false;
+    Bot bot;
+    int cheeseDelay = 100;
+
+    public MessageHandler(Bot bot) {
+        this.bot = bot;
+    }
 
     public boolean isAuthorAdmin(@Nonnull GuildMessageReceivedEvent event) {
         return (admins.contains(event.getAuthor().getId()));
@@ -116,9 +121,24 @@ public class MessageHandler {
             } else {
                 event.getMessage().getChannel().sendMessage("'xd' has currently legal.").queue();
             }
-        } else if (message.equals("cheese")) {
+        } else if (message.length() == 6 && message.equals("cheese")) {
             cheese = true;
             event.getMessage().getChannel().sendMessage("Cheese activated").queue();
+        } else if (message.length() > 6 && message.substring(0,6).equals("cheese")) {
+            try {
+                String id = message.substring(10, message.length() - 1);
+                User tagged = event.getAuthor().getJDA().getUserById(id);
+                List<TextChannel> channels = event.getAuthor().getJDA().getTextChannels();
+                for (int i = 0; i < channels.size(); i++) {
+                    if (channels.get(i).canTalk()) {
+                        Message m = channels.get(i).sendMessage("<@" + id + ">")
+                                .complete(true);
+                        m.delete().queue();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Id not working for cheese command?");
+            }
         } else if (message.equals("uncheese")) {
             cheese = false;
             event.getMessage().getChannel().sendMessage("Cheese deactivated").queue();

@@ -27,13 +27,15 @@ import java.util.logging.Logger;
 public class Bot extends ListenerAdapter {
 
     BotToken botToken;
-    MessageHandler messageHandler = new MessageHandler();
+    MessageHandler messageHandler = new MessageHandler(this);
 
     public static void main(String[] args) throws Exception {
         List<GatewayIntent> intentList = new ArrayList<>();
         intentList.add(GatewayIntent.GUILD_MEMBERS);
         intentList.add(GatewayIntent.GUILD_MESSAGES);
         intentList.add(GatewayIntent.GUILD_PRESENCES);
+        intentList.add(GatewayIntent.DIRECT_MESSAGES);
+        intentList.add(GatewayIntent.DIRECT_MESSAGE_TYPING);
         Bot bot = new Bot();
         JDA jda = JDABuilder.createDefault(
                 BotToken.TOKEN, intentList).build();
