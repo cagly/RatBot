@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -13,9 +14,6 @@ import java.util.List;
 public class MessageHandler {
 
     List<String> firstHalfUni = Arrays.asList("U+0078", "U+0058", "U+0425","U+0445","U+04FC", "U+04FD", "U+04FE", "U+04FF");
-//    List<String> firstHalf = Arrays.asList("x", "X", "Х","х","Ӽ", "ӽ", "Ӿ", "ӿ");
-//    List<String> secondHalf = Arrays.asList("Ð", "þ", "Ď", "ď", "Đ", "đ", "Ɖ","Ɗ"
-//          ,"Ƣ", "ǳ", "ǲ", "Ǳ", "Ƿ", "Ɋ","ɋ","q", "Ḋ","ḋ", "Ϸ", "D", "d", "ϸ", "ь");
     List<String> secondHalfUni = Arrays.asList("U+0044", "U+0064", "U+00D0", "U+00FE", "U+010E", "U+010F",
             "U+0110", "U+0111", "U+0189", "U+018A", "U+01A2", "U+01F3", "U+01F2", "U+01F1", "U+01F7",
             "U+024A", "U+024B", "U+0071", "U+1E0A", "U+1E0B", "U+03F7", "U+03F8", "U+044C");
@@ -27,9 +25,9 @@ public class MessageHandler {
     Boolean xdIllegal = false;
     Boolean cheese = false;
     Bot bot;
-    int cheeseDelay = 100;
+    Jokes jokes = new Jokes();
 
-    public MessageHandler(Bot bot) {
+    public MessageHandler(Bot bot) throws IOException {
         this.bot = bot;
     }
 
@@ -115,11 +113,19 @@ public class MessageHandler {
     }
 
     private void userCommandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
-        if (message.equals("xd status")) {
+        if (message.equals("commands")) {
+            event.getMessage().getChannel().sendMessage("Here is a list of my commands:\n" +
+                    "xd status - Displays whether 'xd' is legal or not.\n" +
+                    "tell us a joke - I tell you a joke.\n" +
+                    "cheese - Activates cheese mode.\n" +
+                    "uncheese - Deactivates cheese mode.\n" +
+                    "cheese @Someone - Cheeses mentioned person.\n" +
+                    "code - I link you my source code.\n").queue();
+        } else if (message.equals("xd status")) {
             if (xdIllegal) {
                 event.getMessage().getChannel().sendMessage("'xd' is currently prohibited.").queue();
             } else {
-                event.getMessage().getChannel().sendMessage("'xd' has currently legal.").queue();
+                event.getMessage().getChannel().sendMessage("'xd' is currently legal.").queue();
             }
         } else if (message.length() == 6 && message.equals("cheese")) {
             cheese = true;
@@ -127,7 +133,6 @@ public class MessageHandler {
         } else if (message.length() > 6 && message.substring(0,6).equals("cheese")) {
             try {
                 String id = message.substring(10, message.length() - 1);
-                User tagged = event.getAuthor().getJDA().getUserById(id);
                 List<TextChannel> channels = event.getAuthor().getJDA().getTextChannels();
                 for (int i = 0; i < channels.size(); i++) {
                     if (channels.get(i).canTalk()) {
@@ -144,6 +149,8 @@ public class MessageHandler {
             event.getMessage().getChannel().sendMessage("Cheese deactivated").queue();
         }  else if (message.equals("code")) {
             event.getMessage().getChannel().sendMessage("https://github.com/cagly/SlaveBot").queue();
+        } else if (message.equals("tell us a joke")) {
+            event.getMessage().getChannel().sendMessage(jokes.getJoke()).queue();
         }
     }
 

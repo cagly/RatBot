@@ -1,6 +1,6 @@
 HELP.md
 .gradle
-.gradle/
+.gradle/*
 build/
 h2
 logs
@@ -37,3 +37,4 @@ out/
 ### VS Code ###
 .vscode/
 /src/main/java/bot/slave/BotToken.java
+/resources/Jokes.txt

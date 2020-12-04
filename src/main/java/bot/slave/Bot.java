@@ -29,6 +29,9 @@ public class Bot extends ListenerAdapter {
     BotToken botToken;
     MessageHandler messageHandler = new MessageHandler(this);
 
+    public Bot() throws IOException {
+    }
+
     public static void main(String[] args) throws Exception {
         List<GatewayIntent> intentList = new ArrayList<>();
         intentList.add(GatewayIntent.GUILD_MEMBERS);
