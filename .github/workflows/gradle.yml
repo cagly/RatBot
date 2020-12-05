@@ -33,7 +33,7 @@ jobs:
        with:
          java-version: 1.8
      - name: Copy bot token
-       run: cp -f ~/BotToken.java ~/actions-runner/_work/SlaveBot/SlaveBot/src/main/java/bot/slave
+       run: cp -f ~/BotToken.java ~/actions-runner/_work/RatBot/RatBot/src/main/java/bot/rat
      - name: Grant execute permission for gradlew
        run: chmod +x gradlew
      - name: Clean with Gradle
@@ -41,13 +41,13 @@ jobs:
      - name: Build with Gradle
        run: ./gradlew shadowJar
      - name: Make resources directory
-       run: mkdir ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/resources
+       run: mkdir ~/actions-runner/_work/RatBot/RatBot/build/libs/resources
      - name: Copy resources
-       run: cp -f ~/actions-runner/_work/SlaveBot/SlaveBot/resources/Jokes.txt ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/resources
+       run: cp -f ~/actions-runner/_work/RatBot/RatBot/resources/Jokes.txt ~/actions-runner/_work/RatBot/RatBot/build/libs/resources
 
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
-     - name: Run SlaveBot
+     - name: Run RatBot
        run: sudo service ratbot restart
