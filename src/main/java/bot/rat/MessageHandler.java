@@ -125,7 +125,7 @@ public class MessageHandler {
                 event.getMessage().getChannel().sendMessage("We xd alone.").queue();
             } else {
                 replyXd = true;
-                event.getMessage().getChannel().sendMessage("We xd together").queue();
+                event.getMessage().getChannel().sendMessage("We xd together.").queue();
             }
         }
     }
