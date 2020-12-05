@@ -25,6 +25,7 @@ public class MessageHandler {
     Boolean cheese = false;
     Bot bot;
     Jokes jokes = new Jokes();
+    Boolean commandsDisabled = false;
 
     public MessageHandler(Bot bot) throws IOException {
         this.bot = bot;
@@ -82,10 +83,14 @@ public class MessageHandler {
     }
 
     private void commandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
-        if (isAuthorAdmin(event)) {
-            adminCommandHandler(message, event);
+        if (!commandsDisabled) {
+            if (isAuthorAdmin(event)) {
+                adminCommandHandler(message, event);
+            }
+            userCommandHandler(message, event);
+        } else {
+            commandEnableHandler(message, event);
         }
-        userCommandHandler(message, event);
     }
 
     private void adminCommandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
@@ -108,6 +113,9 @@ public class MessageHandler {
             if (muteds.remove(id)) {
                 event.getMessage().getChannel().sendMessage("<@" + id + "> has been unmuted.").queue();
             }
+        } else if (message.equals("disable commands")) {
+            commandsDisabled = true;
+            event.getMessage().getChannel().sendMessage("Commands are now disabled.").queue();
         }
     }
 
@@ -147,9 +155,16 @@ public class MessageHandler {
             cheese = false;
             event.getMessage().getChannel().sendMessage("Cheese deactivated").queue();
         }  else if (message.equals("code")) {
-            event.getMessage().getChannel().sendMessage("https://github.com/cagly/RatBot").queue();
+            event.getMessage().getChannel().sendMessage("My repository is currently private!").queue();
         } else if (message.equals("tell us a joke")) {
             event.getMessage().getChannel().sendMessage(jokes.getJoke()).queue();
+        }
+    }
+
+    private void commandEnableHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
+        if (message.equals("enable commands")) {
+            commandsDisabled = false;
+            event.getMessage().getChannel().sendMessage("Commands are now enabled.").queue();
         }
     }
 
