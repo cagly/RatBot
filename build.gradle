@@ -9,6 +9,9 @@ sourceCompatibility = 1.8
 
 jar {
     archiveName = 'SlaveBot.jar'
+    manifest {
+        attributes 'Main-Class': 'bot.slave.Bot'
+    }
 }
 
 repositories {
