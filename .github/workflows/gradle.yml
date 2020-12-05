@@ -45,8 +45,8 @@ jobs:
      - name: Copy resources
        run: cp -f ~/actions-runner/_work/SlaveBot/SlaveBot/resources/Jokes.txt ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/resources
 
-#  deploy:
-#    runs-on: self-hosted
-#    steps:
-#     - name: Run SlaveBot
-#       run: java -jar ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/SlaveBotShadow.jar
+  deploy:
+    runs-on: self-hosted
+    steps:
+     - name: Run SlaveBot
+       run: sudo service slavebot restart
