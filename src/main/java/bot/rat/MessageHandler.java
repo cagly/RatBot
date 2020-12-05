@@ -69,7 +69,7 @@ public class MessageHandler {
                     if (xdIllegal && !isAuthorAdmin(event)) {
                         event.getMessage().delete().queue();
                     } else {
-                        event.getMessage().getChannel().sendMessage("xd").queue();
+//                        event.getMessage().getChannel().sendMessage("xd").queue();
                     }
                     return;
                 }
