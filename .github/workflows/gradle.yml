@@ -46,6 +46,7 @@ jobs:
        run: cp -f ~/actions-runner/_work/SlaveBot/SlaveBot/resources/Jokes.txt ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/resources
 
   deploy:
+    needs: build
     runs-on: self-hosted
     steps:
      - name: Run SlaveBot
