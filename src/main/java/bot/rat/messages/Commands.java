@@ -120,6 +120,7 @@ public class Commands {
                     m.delete().queue();
                 }
             }
+            event.getMessage().delete().queue();
         } catch (Exception e) {
             System.out.println("Id not working for cheese command?");
         }
