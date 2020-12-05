@@ -47,7 +47,6 @@ jobs:
 
   deploy:
     runs-on: self-hosted
-    stage: deploy
     steps:
      - name: Run SlaveBot
        run: java -jar ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/SlaveBotShadow.jar
