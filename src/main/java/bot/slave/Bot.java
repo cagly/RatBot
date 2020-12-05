@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 public class Bot extends ListenerAdapter {
 
     BotToken botToken;
+
     MessageHandler messageHandler = new MessageHandler(this);
 
     public Bot() throws IOException {
