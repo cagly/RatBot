@@ -30,6 +30,5 @@ jobs:
        run: mkdir ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/resources
      - name: Copy resources
        run: cp -f ~/actions-runner/_work/SlaveBot/SlaveBot/resources/Jokes.txt ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/resources
-
-#     - name: Run SlaveBot
-#       run: java -jar ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/SlaveBot.jar
+     - name: Run SlaveBot
+       run: java -jar ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/SlaveBotShadow.jar

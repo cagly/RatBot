@@ -148,7 +148,6 @@ public class MessageHandler {
             cheese = false;
             event.getMessage().getChannel().sendMessage("Cheese deactivated").queue();
         }  else if (message.equals("code")) {
-            System.out.println("here");
             event.getMessage().getChannel().sendMessage("https://github.com/cagly/SlaveBot").queue();
         } else if (message.equals("tell us a joke")) {
             event.getMessage().getChannel().sendMessage(jokes.getJoke()).queue();
