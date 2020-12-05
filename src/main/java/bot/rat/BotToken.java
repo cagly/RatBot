@@ -1,4 +1,4 @@
-package bot.slave;
+package bot.rat;
 
 public class BotToken {
 

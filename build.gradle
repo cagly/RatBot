@@ -24,7 +24,7 @@ dependencies {
 jar {
     archiveName = 'SlaveBot.jar'
     manifest {
-        attributes 'Main-Class': 'bot.slave.Bot'
+        attributes 'Main-Class': 'bot.rat.Bot'
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
