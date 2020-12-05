@@ -26,6 +26,7 @@ public class MessageHandler {
     Bot bot;
     Jokes jokes = new Jokes();
     Boolean commandsDisabled = false;
+    Boolean replyXd = false;
 
     public MessageHandler(Bot bot) throws IOException {
         this.bot = bot;
@@ -69,7 +70,9 @@ public class MessageHandler {
                     if (xdIllegal && !isAuthorAdmin(event)) {
                         event.getMessage().delete().queue();
                     } else {
-//                        event.getMessage().getChannel().sendMessage("xd").queue();
+                        if (replyXd) {
+                            event.getMessage().getChannel().sendMessage("xd").queue();
+                        }
                     }
                     return;
                 }
@@ -116,6 +119,14 @@ public class MessageHandler {
         } else if (message.equals("disable commands")) {
             commandsDisabled = true;
             event.getMessage().getChannel().sendMessage("Commands are now disabled.").queue();
+        } else if (message.equals("rxd") || message.equals("reply xd")) {
+            if (replyXd) {
+                replyXd = false;
+                event.getMessage().getChannel().sendMessage("We xd alone.").queue();
+            } else {
+                replyXd = true;
+                event.getMessage().getChannel().sendMessage("We xd together").queue();
+            }
         }
     }
 
