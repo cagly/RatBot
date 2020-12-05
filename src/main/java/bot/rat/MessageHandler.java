@@ -147,7 +147,7 @@ public class MessageHandler {
             cheese = false;
             event.getMessage().getChannel().sendMessage("Cheese deactivated").queue();
         }  else if (message.equals("code")) {
-            event.getMessage().getChannel().sendMessage("https://github.com/cagly/SlaveBot").queue();
+            event.getMessage().getChannel().sendMessage("https://github.com/cagly/RatBot").queue();
         } else if (message.equals("tell us a joke")) {
             event.getMessage().getChannel().sendMessage(jokes.getJoke()).queue();
         }
