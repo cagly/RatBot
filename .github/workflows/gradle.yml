@@ -24,3 +24,5 @@ jobs:
        run: chmod +x gradlew
      - name: Build with Gradle
        run: ./gradlew build
+     - name: Run SlaveBot
+       run: java -jar ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/SlaveBot.jar
