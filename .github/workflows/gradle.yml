@@ -25,6 +25,6 @@ jobs:
      - name: Clean with Gradle
        run: ./gradlew clean
      - name: Build with Gradle
-       run: ./gradlew fatJar
+       run: ./gradlew build
 #     - name: Run SlaveBot
 #       run: java -jar ~/actions-runner/_work/SlaveBot/SlaveBot/build/libs/SlaveBot.jar
