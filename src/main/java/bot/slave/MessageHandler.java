@@ -46,8 +46,8 @@ public class MessageHandler {
                 if (muteHandler(event)) {
                     return;
                 }
-                if (msg.length() > 5 && msg.substring(0, 6).equals("!ikit ")) {
-                    commandHandler(msg = msg.substring(6), event);
+                if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
+                    commandHandler(msg = msg.substring(5), event);
                 } else {
                     if (cheese) {
                         cheeseHandler(event);
