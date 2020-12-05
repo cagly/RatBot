@@ -30,6 +30,7 @@ public class Bot extends ListenerAdapter {
         JDA jda = JDABuilder.createDefault(
                 BotToken.TOKEN, intentList).build();
         jda.addEventListener(bot);
+//        jda.getTextChannels().get(1).sendMessage("IkitBot is back online!").queue();
     }
 
     @Override
