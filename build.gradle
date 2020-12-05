@@ -10,8 +10,7 @@ sourceCompatibility = 1.8
 jar {
     archiveName = 'SlaveBot.jar'
     manifest {
-        sourceSets.main.java.srcDirs = ['src']
-        attributes 'Main-Class': 'bot.slave.Bot'
+        attributes 'Main-Class': 'main.java.bot.slave.Bot'
     }
 }
 
