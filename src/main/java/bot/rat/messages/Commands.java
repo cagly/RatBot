@@ -122,12 +122,12 @@ public class Commands {
 
     private void cheeseSomeone(GuildMessageReceivedEvent event, String message) {
         try {
-            String id = message.substring(10, message.length() - 1);
-            Role ratRole = event.getAuthor().getJDA().getRolesByName("Cheese", false).get(0);
-            event.getMessage().getGuild().addRoleToMember(id, ratRole).complete();
-            MessageChannel cheeseChannel = event.getMessage().getGuild().getTextChannelsByName("cheese-channel", false).get(0);
-            cheeseChannel.sendMessage("<@" + id + ">").complete();
-            event.getMessage().getGuild().removeRoleFromMember(id, ratRole).complete();
+//            String id = message.substring(10, message.length() - 1);
+//            Role ratRole = event.getAuthor().getJDA().getRolesByName("Cheese", false).get(0);
+//            event.getMessage().getGuild().addRoleToMember(id, ratRole).complete();
+//            MessageChannel cheeseChannel = event.getMessage().getGuild().getTextChannelsByName("cheese-channel", false).get(0);
+//            cheeseChannel.sendMessage("<@" + id + ">").complete();
+//            event.getMessage().getGuild().removeRoleFromMember(id, ratRole).complete();
             event.getMessage().delete().queue();
 //            event.getMessage().getChannel().sendMessage("Cheesing someone is closed indefinitely.").queue();
         } catch (Exception e) {
