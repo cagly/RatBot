@@ -1,7 +1,10 @@
 package bot.rat.messages;
 
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import javax.annotation.Nonnull;
@@ -111,18 +114,16 @@ public class Commands {
 
     private void cheeseSomeone(GuildMessageReceivedEvent event, String message) {
         try {
-            String id = message.substring(10, message.length() - 1);
-            List<TextChannel> channels = event.getAuthor().getJDA().getTextChannels();
-            for (int i = 0; i < channels.size(); i++) {
-                if (channels.get(i).canTalk()) {
-                    Message m = channels.get(i).sendMessage("<@" + id + ">")
-                            .complete(true);
-                    m.delete().queue();
-                }
-            }
-            event.getMessage().delete().queue();
+//            String id = message.substring(10, message.length() - 1);
+//            Role ratRole = event.getAuthor().getJDA().getRolesByName("Cheese", false).get(0);
+//            event.getMessage().getGuild().addRoleToMember(id, ratRole).complete();
+//            MessageChannel cheeseChannel = event.getMessage().getGuild().getTextChannelsByName("cheese-channel", false).get(0);
+//            cheeseChannel.sendMessage("<@" + id + ">").complete();
+//            event.getMessage().getGuild().removeRoleFromMember(id, ratRole).complete();
+//            event.getMessage().delete().queue();
+            event.getMessage().getChannel().sendMessage("Cheesing someone is closed indefinitely.").queue();
         } catch (Exception e) {
-            System.out.println("Id not working for cheese command?");
+            System.out.println("Cheese Someone system failed");
         }
     }
 
