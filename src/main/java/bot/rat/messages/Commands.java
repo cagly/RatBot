@@ -44,7 +44,14 @@ public class Commands {
         } else if (message.equals("rxd") || message.equals("reply xd")) {
             replyXd(event, messageHandler);
         }
+//        else if (message.equals("session zero")) {
+//            sessionZero(event);
+//        }
     }
+
+//    private void sessionZero(GuildMessageReceivedEvent event) {
+//        event.getMessage().getChannel().sendMessage().queue();
+//    }
 
     private void legalizeXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("'xd' has been legalized.").queue();
@@ -115,14 +122,14 @@ public class Commands {
 
     private void cheeseSomeone(GuildMessageReceivedEvent event, String message) {
         try {
-//            String id = message.substring(10, message.length() - 1);
-//            Role ratRole = event.getAuthor().getJDA().getRolesByName("Cheese", false).get(0);
-//            event.getMessage().getGuild().addRoleToMember(id, ratRole).complete();
-//            MessageChannel cheeseChannel = event.getMessage().getGuild().getTextChannelsByName("cheese-channel", false).get(0);
-//            cheeseChannel.sendMessage("<@" + id + ">").complete();
-//            event.getMessage().getGuild().removeRoleFromMember(id, ratRole).complete();
-//            event.getMessage().delete().queue();
-            event.getMessage().getChannel().sendMessage("Cheesing someone is closed indefinitely.").queue();
+            String id = message.substring(10, message.length() - 1);
+            Role ratRole = event.getAuthor().getJDA().getRolesByName("Cheese", false).get(0);
+            event.getMessage().getGuild().addRoleToMember(id, ratRole).complete();
+            MessageChannel cheeseChannel = event.getMessage().getGuild().getTextChannelsByName("cheese-channel", false).get(0);
+            cheeseChannel.sendMessage("<@" + id + ">").complete();
+            event.getMessage().getGuild().removeRoleFromMember(id, ratRole).complete();
+            event.getMessage().delete().queue();
+//            event.getMessage().getChannel().sendMessage("Cheesing someone is closed indefinitely.").queue();
         } catch (Exception e) {
             System.out.println("Cheese Someone system failed");
         }
