@@ -23,8 +23,6 @@ public class Commands {
             unMute(event, message, messageHandler);
         } else if (message.equals("dc") || message.equals("disable commands")) {
             disableCommands(event, messageHandler);
-        } else if (message.equals("rxd") || message.equals("reply xd")) {
-            replyXd(event, messageHandler);
         }
     }
 
@@ -43,6 +41,8 @@ public class Commands {
             code(event);
         } else if (message.equals("tell us a joke")) {
             tellJoke(event, messageHandler);
+        } else if (message.equals("rxd") || message.equals("reply xd")) {
+            replyXd(event, messageHandler);
         }
     }
 
@@ -96,7 +96,8 @@ public class Commands {
                 "cheese - Activates cheese mode.\n" +
                 "uncheese - Deactivates cheese mode.\n" +
                 "cheese @Someone - Cheeses mentioned person.\n" +
-                "code - I link you my source code.\n").queue();
+                "code - I link you my source code.\n" +
+                "reply xd - Toggle unified xd.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
