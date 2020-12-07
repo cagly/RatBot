@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.Optional;
 
 @Service
@@ -26,13 +27,14 @@ public class UserService {
 
     public UserEntity getUserById(String id) {
         Optional<UserEntity> opUser = userRepository.findById(id);
-        return opUser.orElse(new UserEntity(id, 0));
+        return opUser.orElseGet(() -> addUserIfMissing(id));
     }
 
-    public void addUserIfMissing(String id) {
+    public UserEntity addUserIfMissing(String id) {
         if (!userRepository.existsById(id)) {
-            userRepository.save(new UserEntity(id, 0));
+            return userRepository.save(new UserEntity(id, 0));
         }
+        return userRepository.findById(id).get();
     }
 
     public void updateUser(UserEntity user) {
