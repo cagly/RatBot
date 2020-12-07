@@ -49,7 +49,7 @@ public class Commands {
         } else if (message.equals("stats")) {
             myStats(event, messageHandler);
         } else if (message.length() > 5 && message.substring(0,5).equals("stats")) {
-            pingedStats(event, messageHandler);
+            pingedStats(event, messageHandler, message);
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
@@ -66,8 +66,8 @@ public class Commands {
         printUserStats(user, event);
     }
 
-    private void pingedStats(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
-        String message = event.getMessage().getContentRaw().substring(9);
+    private void pingedStats(GuildMessageReceivedEvent event, MessageHandler messageHandler, String message) {
+        message = message.substring(9);
         event.getMessage().getChannel().sendMessage(message).queue();
         String id = message.substring(0, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
