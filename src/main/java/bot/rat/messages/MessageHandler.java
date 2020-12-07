@@ -2,8 +2,11 @@ package bot.rat.messages;
 
 import bot.rat.Bot;
 import bot.rat.Jokes;
+import bot.rat.entities.UserEntity;
+import bot.rat.services.UserService;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -30,6 +33,9 @@ public class MessageHandler {
     Boolean replyXd = false;
     Commands commands = new Commands();
 
+    @Autowired
+    UserService userService;
+
     public MessageHandler(Bot bot) throws IOException {
         this.bot = bot;
     }
@@ -43,6 +49,7 @@ public class MessageHandler {
     }
 
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
+        UserEntity user = userService.getUserById(event.getAuthor().getId());
         String msg = event.getMessage().getContentRaw();
         try {
             if (!event.getAuthor().isBot()) {
@@ -64,25 +71,32 @@ public class MessageHandler {
     }
 
     private void manageIllegalMessage(@Nonnull GuildMessageReceivedEvent event) {
-        char[] chars = event.getMessage().getContentRaw().replaceAll(illegalStringSeperators, "").toCharArray();
-        boolean xFound = false;
-        for (char c : chars) {
-            if (xFound) {
-                if (secondHalfUni.contains(String.format("U+%04X", (int) c))) {
-                    if (xdIllegal && !isAuthorAdmin(event)) {
-                        event.getMessage().delete().queue();
-                    } else {
-                        if (replyXd) {
-                            event.getMessage().getChannel().sendMessage("xd").queue();
-                        }
-                    }
-                    return;
-                }
-            }
-            if (firstHalfUni.contains(String.format("U+%04X", (int) c))) {
-                xFound = true;
-            } else {
-                xFound = false;
+//        char[] chars = event.getMessage().getContentRaw().replaceAll(illegalStringSeperators, "").toCharArray();
+//        boolean xFound = false;
+//        for (char c : chars) {
+//            if (xFound) {
+//                if (secondHalfUni.contains(String.format("U+%04X", (int) c))) {
+//                    if (xdIllegal && !isAuthorAdmin(event)) {
+//                        event.getMessage().delete().queue();
+//                    } else {
+//                        if (replyXd) {
+//                            event.getMessage().getChannel().sendMessage("xd").queue();
+//                        }
+//                    }
+//                    return;
+//                }
+//            }
+//            if (firstHalfUni.contains(String.format("U+%04X", (int) c))) {
+//                xFound = true;
+//            } else {
+//                xFound = false;
+//            }
+//        }
+        if (event.getMessage().getContentRaw().toLowerCase().contains("xd")) {
+            if (xdIllegal && !isAuthorAdmin(event)) {
+                event.getMessage().delete().queue();
+            } else if (replyXd) {
+                event.getMessage().getChannel().sendMessage("xd").queue();
             }
         }
     }
