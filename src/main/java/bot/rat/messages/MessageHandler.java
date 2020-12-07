@@ -17,13 +17,12 @@ import java.util.List;
 @Component
 public class MessageHandler {
 
-    List<String> firstHalfUni = Arrays.asList("U+0078", "U+0058", "U+0425","U+0445","U+04FC", "U+04FD", "U+04FE", "U+04FF");
-    List<String> secondHalfUni = Arrays.asList("U+0044", "U+0064", "U+00D0", "U+00FE", "U+010E", "U+010F",
-            "U+0110", "U+0111", "U+0189", "U+018A", "U+01A2", "U+01F3", "U+01F2", "U+01F1", "U+01F7",
-            "U+024A", "U+024B", "U+0071", "U+1E0A", "U+1E0B", "U+03F7", "U+03F8", "U+044C");
-    String illegalStringSeperators = "[ !,.?]";
+//    List<String> firstHalfUni = Arrays.asList("U+0078", "U+0058", "U+0425","U+0445","U+04FC", "U+04FD", "U+04FE", "U+04FF");
+//    List<String> secondHalfUni = Arrays.asList("U+0044", "U+0064", "U+00D0", "U+00FE", "U+010E", "U+010F",
+//            "U+0110", "U+0111", "U+0189", "U+018A", "U+01A2", "U+01F3", "U+01F2", "U+01F1", "U+01F7",
+//            "U+024A", "U+024B", "U+0071", "U+1E0A", "U+1E0B", "U+03F7", "U+03F8", "U+044C");
+//    String illegalStringSeperators = "[ !,.?]";
 
-    List<String> admins = Arrays.asList("234042381249413130");
     HashSet<String> muteds = new HashSet<>();
     HashSet<String> cheeseList = new HashSet<>();
     Boolean xdIllegal = false;
@@ -40,15 +39,20 @@ public class MessageHandler {
     }
 
     public boolean isAuthorAdmin(@Nonnull GuildMessageReceivedEvent event) {
-        return (admins.contains(event.getAuthor().getId()));
+        return userService.getUserById(event.getAuthor().getId()).getAdmin();
     }
 
     public boolean isAuthorMuted(@Nonnull GuildMessageReceivedEvent event) {
-        return (muteds.contains(event.getAuthor().getId()));
+        return userService.getUserById(event.getAuthor().getId()).getMuted();
+    }
+
+    public void muteUser(String id) {
+        UserEntity user = userService.getUserById(id);
+        user.setMuted(true);
+        userService.updateUser(user);
     }
 
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
-        UserEntity user = userService.getUserById(event.getAuthor().getId());
         String msg = event.getMessage().getContentRaw();
         try {
             if (!event.getAuthor().isBot()) {

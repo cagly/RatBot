@@ -34,4 +34,11 @@ public class UserService {
             return newUser;
         }
     }
+
+    public void updateUser(UserEntity user) {
+        Optional<UserEntity> opUser = userRepository.findById(user.getId());
+        if (opUser.isPresent()) {
+            userRepository.save(user);
+        }
+    }
 }
