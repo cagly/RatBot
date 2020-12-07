@@ -44,8 +44,10 @@ public class Commands {
             tellJoke(event, messageHandler);
         } else if (message.equals("rxd") || message.equals("reply xd")) {
             replyXd(event, messageHandler);
-        } else if (message.equals("my stats")) {
+        } else if (message.equals("stats")) {
             myStats(event, messageHandler);
+        } else if (message.length() > 5 && message.substring(0,5).equals("stats")) {
+            pingedStats(event, messageHandler);
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
@@ -59,8 +61,18 @@ public class Commands {
     private void myStats(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         String id = event.getAuthor().getId();
         UserEntity user = messageHandler.getUser(id);
+        printUserStats(user, event);
+    }
+
+    private void pingedStats(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+        String id = event.getMessage().getContentRaw().substring(9, event.getMessage().getContentRaw().length() - 1);
+        UserEntity user = messageHandler.getUser(id);
+        printUserStats(user, event);
+    }
+
+    private void printUserStats(UserEntity user, GuildMessageReceivedEvent event) {
         event.getMessage().getChannel()
-                .sendMessage("<@"+id+">'s Stats:\n" +
+                .sendMessage("<@"+user.getId()+">'s Stats:\n" +
                         "You have " + user.getPoints() + " points.\n" +
                         "Admin status: " + user.getAdmin() + "\n" +
                         "Muted status: " + user.getMuted()).queue();
@@ -80,16 +92,18 @@ public class Commands {
 
     private void mute(GuildMessageReceivedEvent event, String message, MessageHandler messageHandler) {
         String id = message.substring(8, message.length() - 1);
-        System.out.println("Added " + id + " to muteds.");
-        if (messageHandler.getMuteds().add(id)) {
+        UserEntity user = messageHandler.getUser(id);
+        if (!user.getMuted()) {
+            messageHandler.muteUser(user);
             event.getMessage().getChannel().sendMessage("<@" + id + "> has been muted.").queue();
         }
     }
 
     private void unMute(GuildMessageReceivedEvent event, String message, MessageHandler messageHandler) {
         String id = message.substring(10, message.length() - 1);
-        System.out.println("Removed " + id + " from muteds.");
-        if (messageHandler.getMuteds().remove(id)) {
+        UserEntity user = messageHandler.getUser(id);
+        if (user.getMuted()) {
+            messageHandler.unmuteUser(user);
             event.getMessage().getChannel().sendMessage("<@" + id + "> has been unmuted.").queue();
         }
     }

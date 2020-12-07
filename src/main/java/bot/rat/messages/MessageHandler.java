@@ -46,9 +46,13 @@ public class MessageHandler {
         return userService.getUserById(event.getAuthor().getId()).getMuted();
     }
 
-    public void muteUser(String id) {
-        UserEntity user = userService.getUserById(id);
+    public void muteUser(UserEntity user) {
         user.setMuted(true);
+        userService.updateUser(user);
+    }
+
+    public void unmuteUser(UserEntity user) {
+        user.setMuted(false);
         userService.updateUser(user);
     }
 

@@ -42,7 +42,7 @@ public class Bot extends ListenerAdapter {
         JDA jda = JDABuilder.createDefault(
                 BotToken.TOKEN, intentList).build();
         jda.addEventListener(bot);
-        jda.getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").queue();
+//        jda.getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").queue();
     }
 
     @Override
