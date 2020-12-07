@@ -26,7 +26,7 @@ public class UserService {
 
     public UserEntity getUserById(String id) {
         Optional<UserEntity> opUser = userRepository.findById(id);
-        return opUser.orElse(null);
+        return opUser.orElse(new UserEntity(id, 0));
     }
 
     public void addUserIfMissing(String id) {
