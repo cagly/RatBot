@@ -94,7 +94,7 @@ public class Commands {
     }
 
     private void mute(GuildMessageReceivedEvent event, String message, MessageHandler messageHandler) {
-        String id = message.substring(8, message.length() - 1);
+        String id = message.substring(13, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
         if (!user.getMuted()) {
             messageHandler.muteUser(user);
@@ -103,7 +103,7 @@ public class Commands {
     }
 
     private void unMute(GuildMessageReceivedEvent event, String message, MessageHandler messageHandler) {
-        String id = message.substring(10, message.length() - 1);
+        String id = message.substring(15, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
         if (user.getMuted()) {
             messageHandler.unmuteUser(user);
