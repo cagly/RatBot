@@ -1,5 +1,6 @@
 package bot.rat;
 
+import bot.rat.privateResources.DatabaseInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
