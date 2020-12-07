@@ -41,7 +41,6 @@ public class Bot extends ListenerAdapter {
                 BotToken.TOKEN, intentList).build();
         jda.addEventListener(bot);
         ApplicationContext context = new AnnotationConfigApplicationContext(PersistenceJPAConfig.class);
-        context.getBean(UserRepository.class);
         bot.messageHandler = context.getBean(MessageHandler.class);
         //        jda.getTextChannels().get(1).sendMessage("IkitBot is back online!").queue();
     }
