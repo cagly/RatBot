@@ -47,11 +47,13 @@ public class MessageHandler {
     }
 
     public void muteUser(UserEntity user) {
+        userService.addUserIfMissing(user.getId());
         user.setMuted(true);
         userService.updateUser(user);
     }
 
     public void unmuteUser(UserEntity user) {
+        userService.addUserIfMissing(user.getId());
         user.setMuted(false);
         userService.updateUser(user);
     }
