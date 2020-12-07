@@ -19,8 +19,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("bot.rat.services")
-@ComponentScan("bot.rat.repositories")
+@ComponentScan("bot.rat")
 public class PersistenceJPAConfig {
 
    @Bean
