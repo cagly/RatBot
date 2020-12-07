@@ -7,6 +7,8 @@ import bot.rat.services.UserService;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+@EnableSpringConfigured
+@Configurable
 public class MessageHandler {
 
     List<String> firstHalfUni = Arrays.asList("U+0078", "U+0058", "U+0425","U+0445","U+04FC", "U+04FD", "U+04FE", "U+04FF");
@@ -27,7 +31,6 @@ public class MessageHandler {
     HashSet<String> cheeseList = new HashSet<>();
     Boolean xdIllegal = false;
     Boolean cheese = false;
-    Bot bot;
     Jokes jokes = new Jokes();
     Boolean commandsDisabled = false;
     Boolean replyXd = false;
@@ -36,8 +39,7 @@ public class MessageHandler {
     @Autowired
     UserService userService;
 
-    public MessageHandler(Bot bot) throws IOException {
-        this.bot = bot;
+    public MessageHandler() throws IOException {
     }
 
     public boolean isAuthorAdmin(@Nonnull GuildMessageReceivedEvent event) {

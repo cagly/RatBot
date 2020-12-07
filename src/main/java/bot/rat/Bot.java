@@ -9,7 +9,9 @@ import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.Nonnull;
@@ -21,7 +23,7 @@ import java.util.List;
 @EnableJpaRepositories
 public class Bot extends ListenerAdapter {
 
-    MessageHandler messageHandler = new MessageHandler(this);
+    MessageHandler messageHandler;
 
     public Bot() throws IOException {
     }
@@ -37,7 +39,9 @@ public class Bot extends ListenerAdapter {
         JDA jda = JDABuilder.createDefault(
                 BotToken.TOKEN, intentList).build();
         jda.addEventListener(bot);
-//        jda.getTextChannels().get(1).sendMessage("IkitBot is back online!").queue();
+        ApplicationContext context = new AnnotationConfigApplicationContext(PersistenceJPAConfig.class);
+        bot.messageHandler = context.getBean(MessageHandler.class);
+        //        jda.getTextChannels().get(1).sendMessage("IkitBot is back online!").queue();
     }
 
     @Override
