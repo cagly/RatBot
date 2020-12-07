@@ -1,14 +1,12 @@
 package bot.rat.messages;
 
-import bot.rat.Bot;
 import bot.rat.Jokes;
 import bot.rat.entities.UserEntity;
 import bot.rat.services.UserService;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -16,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+@Component
 public class MessageHandler {
 
     List<String> firstHalfUni = Arrays.asList("U+0078", "U+0058", "U+0425","U+0445","U+04FC", "U+04FD", "U+04FE", "U+04FF");
