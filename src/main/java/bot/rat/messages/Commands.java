@@ -67,7 +67,7 @@ public class Commands {
     }
 
     private void pingedStats(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
-        String message = event.getMessage().getContentRaw().substring(0,5);
+        String message = event.getMessage().getContentRaw().substring(9);
         String id = message.substring(0, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
         printUserStats(user, event);
