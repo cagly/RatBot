@@ -1,6 +1,7 @@
 package bot.rat;
 
 import bot.rat.privateResources.DatabaseInfo;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,8 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories
+@EntityScan("bot.rat.entities")
+@EnableJpaRepositories("bot.rat.repositories")
 @ComponentScan({"bot.rat.repositories", "bot.rat.services"})
 public class PersistenceJPAConfig {
 
