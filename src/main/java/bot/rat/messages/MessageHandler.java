@@ -67,7 +67,7 @@ public class MessageHandler {
                     return;
                 }
                 if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
-                    commandHandler(msg = msg.substring(5), event);
+                    commandHandler(msg.substring(5), event);
                 } else {
                     if (cheese) {
                         cheeseHandler(event);
@@ -76,7 +76,7 @@ public class MessageHandler {
                 }
             }
         } catch (Exception e) {
-            event.getMessage().getChannel().sendMessage("Uh oh! Rat did a fucky wucky.\n" +
+            event.getMessage().getChannel().sendMessage("Uh oh! RatBot did a fucky wucky. UwU\n" +
                     "Message was: " + event.getMessage().getContentRaw()).queue();
         }
     }
