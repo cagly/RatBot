@@ -2,6 +2,7 @@ package bot.rat;
 
 import bot.rat.messages.MessageHandler;
 import bot.rat.privateResources.BotToken;
+import bot.rat.repositories.UserRepository;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -40,6 +41,7 @@ public class Bot extends ListenerAdapter {
                 BotToken.TOKEN, intentList).build();
         jda.addEventListener(bot);
         ApplicationContext context = new AnnotationConfigApplicationContext(PersistenceJPAConfig.class);
+        context.getBean(UserRepository.class);
         bot.messageHandler = context.getBean(MessageHandler.class);
         //        jda.getTextChannels().get(1).sendMessage("IkitBot is back online!").queue();
     }
