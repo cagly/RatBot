@@ -13,15 +13,15 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    // Do i even need this?
-    public Boolean isUserInDatabase(String id) {
-        boolean ans = userRepository.existsById(id);
-        if (!ans) {
-            UserEntity newUser = new UserEntity(id, 0);
-            userRepository.save(newUser);
-        }
-        return ans;
-    }
+//     Do i even need this?
+//    public Boolean isUserInDatabase(String id) {
+//        boolean ans = userRepository.existsById(id);
+//        if (!ans) {
+//            UserEntity newUser = new UserEntity(id, 0);
+//            userRepository.save(newUser);
+//        }
+//        return ans;
+//    }
 
     public UserEntity getUserById(String id) {
         Optional<UserEntity> opUser = userRepository.findById(id);
