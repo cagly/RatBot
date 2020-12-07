@@ -74,11 +74,23 @@ public class Commands {
     }
 
     private void printUserStats(UserEntity user, GuildMessageReceivedEvent event) {
+        String adminMessage;
+        String muteMessage;
+        if(user.getAdmin()) {
+            adminMessage = "You are an admin and ";
+        } else {
+            adminMessage = "You are not an admin and ";
+        }
+        if (user.getMuted()) {
+            muteMessage = "you are muted";
+        } else {
+            muteMessage = "you are not muted.";
+        }
+
         event.getMessage().getChannel()
                 .sendMessage("<@"+user.getId()+">'s Stats:\n" +
                         "You have " + user.getPoints() + " points.\n" +
-                        "Admin status: " + user.getAdmin() + "\n" +
-                        "Muted status: " + user.getMuted()).queue();
+                        adminMessage + muteMessage).queue();
     }
 
     private void legalizeXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
