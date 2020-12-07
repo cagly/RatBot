@@ -28,7 +28,7 @@ public class PersistenceJPAConfig {
       LocalContainerEntityManagerFactoryBean em
               = new LocalContainerEntityManagerFactoryBean();
       em.setDataSource(dataSource());
-      em.setPackagesToScan("bot.rat.entities", "bot.rat.repositories");
+      em.setPackagesToScan("bot.rat.entities");
 
       JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
       em.setJpaVendorAdapter(vendorAdapter);
