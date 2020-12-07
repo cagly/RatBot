@@ -59,6 +59,7 @@ public class MessageHandler {
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
         String msg = event.getMessage().getContentRaw();
         try {
+            userService.addUserIfMissing(event.getAuthor().getId());
             if (!event.getAuthor().isBot()) {
                 if (muteHandler(event)) {
                     return;
@@ -73,7 +74,8 @@ public class MessageHandler {
                 }
             }
         } catch (Exception e) {
-            System.out.println("GuildMessageReceived error with message: " + msg);
+            event.getMessage().getChannel().sendMessage("Uh oh! Rat did a fucky wucky.\n" +
+                    "Message was: " + event.getMessage()).queue();
         }
     }
 

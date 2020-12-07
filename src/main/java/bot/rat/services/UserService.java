@@ -26,12 +26,12 @@ public class UserService {
 
     public UserEntity getUserById(String id) {
         Optional<UserEntity> opUser = userRepository.findById(id);
-        if (opUser.isPresent()) {
-            return opUser.get();
-        } else {
-            UserEntity newUser = new UserEntity(id, 0);
-            userRepository.save(newUser);
-            return newUser;
+        return opUser.orElse(null);
+    }
+
+    public void addUserIfMissing(String id) {
+        if (!userRepository.existsById(id)) {
+            userRepository.save(new UserEntity(id, 0));
         }
     }
 
