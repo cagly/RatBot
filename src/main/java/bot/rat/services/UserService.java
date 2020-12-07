@@ -3,12 +3,13 @@ package bot.rat.services;
 import bot.rat.entities.UserEntity;
 import bot.rat.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@ComponentScan("bot.rat.repositories")
 public class UserService {
 
     @Autowired
