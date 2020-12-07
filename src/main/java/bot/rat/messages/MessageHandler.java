@@ -33,8 +33,7 @@ public class MessageHandler {
     Boolean replyXd = false;
     Commands commands = new Commands();
 
-    @Autowired
-    UserService userService;
+    UserService userService = new UserService();
 
     public MessageHandler(Bot bot) throws IOException {
         this.bot = bot;

@@ -24,9 +24,7 @@ public class UserService {
     }
 
     public UserEntity getUserById(String id) {
-        System.out.println("1");
         Optional<UserEntity> opUser = userRepository.findById(id);
-        System.out.println("2");
         if (opUser.isPresent()) {
             return opUser.get();
         } else {
