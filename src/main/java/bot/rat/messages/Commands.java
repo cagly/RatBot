@@ -117,7 +117,8 @@ public class Commands {
                 "uncheese - Deactivates cheese mode.\n" +
                 "cheese @Someone - Cheeses mentioned person.\n" +
                 "code - I link you my source code.\n" +
-                "reply xd - Toggle unified xd.").queue();
+                "reply xd - Toggle unified xd.\n" +
+                "my stats - I display your stats").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
