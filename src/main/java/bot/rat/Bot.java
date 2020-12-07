@@ -30,19 +30,19 @@ public class Bot extends ListenerAdapter {
     }
 
     public static void main(String[] args) throws Exception {
+        Bot bot = new Bot();
+        ApplicationContext context = new AnnotationConfigApplicationContext(PersistenceJPAConfig.class);
+        bot.messageHandler = context.getBean(MessageHandler.class);
         List<GatewayIntent> intentList = new ArrayList<>();
         intentList.add(GatewayIntent.GUILD_MEMBERS);
         intentList.add(GatewayIntent.GUILD_MESSAGES);
         intentList.add(GatewayIntent.GUILD_PRESENCES);
         intentList.add(GatewayIntent.DIRECT_MESSAGES);
         intentList.add(GatewayIntent.DIRECT_MESSAGE_TYPING);
-        Bot bot = new Bot();
         JDA jda = JDABuilder.createDefault(
                 BotToken.TOKEN, intentList).build();
         jda.addEventListener(bot);
-        ApplicationContext context = new AnnotationConfigApplicationContext(PersistenceJPAConfig.class);
-        bot.messageHandler = context.getBean(MessageHandler.class);
-        //        jda.getTextChannels().get(1).sendMessage("IkitBot is back online!").queue();
+        jda.getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").queue();
     }
 
     @Override

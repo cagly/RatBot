@@ -148,6 +148,10 @@ public class MessageHandler {
         }
     }
 
+    protected UserEntity getUser(String id) {
+        return userService.getUserById(id);
+    }
+
     /**
      *  Auto generated generic code below
      */

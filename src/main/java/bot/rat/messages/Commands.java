@@ -1,5 +1,6 @@
 package bot.rat.messages;
 
+import bot.rat.entities.UserEntity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
@@ -43,6 +44,8 @@ public class Commands {
             tellJoke(event, messageHandler);
         } else if (message.equals("rxd") || message.equals("reply xd")) {
             replyXd(event, messageHandler);
+        } else if (message.equals("my stats")) {
+            myStats(event, messageHandler);
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
@@ -52,6 +55,16 @@ public class Commands {
 //    private void sessionZero(GuildMessageReceivedEvent event) {
 //        event.getMessage().getChannel().sendMessage().queue();
 //    }
+
+    private void myStats(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+        String id = event.getAuthor().getId();
+        UserEntity user = messageHandler.getUser(id);
+        event.getMessage().getChannel()
+                .sendMessage("<@"+id+">'s Stats:\n" +
+                        "You have " + user.getPoints() + " points.\n" +
+                        "Admin status: " + user.getAdmin() + "\n" +
+                        "Muted status: " + user.getMuted()).queue();
+    }
 
     private void legalizeXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("'xd' has been legalized.").queue();
