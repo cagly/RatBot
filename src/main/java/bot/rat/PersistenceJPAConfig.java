@@ -23,7 +23,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EntityScan("bot.rat.entities")
 @EnableJpaRepositories("bot.rat.repositories")
-@ComponentScan({"bot.rat.repositories", "bot.rat.services"})
+@ComponentScan({"bot.rat.repositories", "bot.rat.services", "bot.rat.messages"})
 public class PersistenceJPAConfig {
 
    @Bean
