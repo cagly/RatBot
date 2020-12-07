@@ -19,7 +19,8 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"bot.rat.repositories", "bot.rat.services"})
+@ComponentScan("bot.rat.services")
+@ComponentScan("bot.rat.repositories")
 public class PersistenceJPAConfig {
 
    @Bean
@@ -27,7 +28,7 @@ public class PersistenceJPAConfig {
       LocalContainerEntityManagerFactoryBean em
               = new LocalContainerEntityManagerFactoryBean();
       em.setDataSource(dataSource());
-      em.setPackagesToScan("bot.rat.entities", "bot.rat.repositoies");
+      em.setPackagesToScan("bot.rat.entities", "bot.rat.repositories");
 
       JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
       em.setJpaVendorAdapter(vendorAdapter);
