@@ -68,7 +68,6 @@ public class Commands {
 
     private void pingedStats(GuildMessageReceivedEvent event, MessageHandler messageHandler, String message) {
         message = message.substring(9);
-        event.getMessage().getChannel().sendMessage(message).queue();
         String id = message.substring(0, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
         printUserStats(user, event);
@@ -96,6 +95,7 @@ public class Commands {
 
     private void mute(GuildMessageReceivedEvent event, String message, MessageHandler messageHandler) {
         String id = message.substring(8, message.length() - 1);
+        event.getMessage().getChannel().sendMessage(id).queue();
         UserEntity user = messageHandler.getUser(id);
         if (!user.getMuted()) {
             messageHandler.muteUser(user);
@@ -106,6 +106,7 @@ public class Commands {
     private void unMute(GuildMessageReceivedEvent event, String message, MessageHandler messageHandler) {
         String id = message.substring(10, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
+        event.getMessage().getChannel().sendMessage(id).queue();
         if (user.getMuted()) {
             messageHandler.unmuteUser(user);
             event.getMessage().getChannel().sendMessage("<@" + id + "> has been unmuted.").queue();
