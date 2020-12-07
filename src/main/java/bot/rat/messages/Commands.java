@@ -24,6 +24,8 @@ public class Commands {
             unMute(event, message, messageHandler);
         } else if (message.equals("dc") || message.equals("disable commands")) {
             disableCommands(event, messageHandler);
+        } else if (message.equals("test")) {
+            event.getAuthor().getJDA().getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").queue();
         }
     }
 
@@ -65,7 +67,8 @@ public class Commands {
     }
 
     private void pingedStats(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
-        String id = event.getMessage().getContentRaw().substring(9, event.getMessage().getContentRaw().length() - 1);
+        String message = event.getMessage().getContentRaw().substring(0,5);
+        String id = message.substring(0, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
         printUserStats(user, event);
     }
