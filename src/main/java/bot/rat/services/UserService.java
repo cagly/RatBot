@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@ComponentScan("bot.rat.repositories")
 public class UserService {
 
     @Autowired
