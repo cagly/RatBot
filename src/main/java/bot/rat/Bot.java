@@ -1,7 +1,7 @@
 package bot.rat;
 
 import bot.rat.messages.MessageHandler;
-import bot.rat.privateResources.BotToken;
+import bot.rat.BotToken;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;

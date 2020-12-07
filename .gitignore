@@ -37,3 +37,4 @@ out/
 ### VS Code ###
 .vscode/
 src/main/java/bot/rat/BotToken.java
+src/main/java/bot/rat/DatabaseInfo.java
