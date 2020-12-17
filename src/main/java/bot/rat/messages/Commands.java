@@ -153,7 +153,8 @@ public class Commands {
                 "cheese @Someone - Cheeses mentioned person.\n" +
                 "code - I link you my source code.\n" +
                 "reply xd - Toggle unified xd.\n" +
-                "my stats - I display your stats").queue();
+                "stats - I display your stats.\n" +
+                "stats @Someone - Display someone's stats.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
