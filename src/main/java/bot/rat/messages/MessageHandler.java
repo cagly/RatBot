@@ -34,7 +34,6 @@ public class MessageHandler {
     Commands commands = new Commands();
 
     String[] settingsToLoadOnStartupArray = new String[]{"replyXd", "cheese", "commandsDisabled", "xdIllegal"};
-    Object[] variablesToLoadIntoFromSettingsToLoadOnStartupArray = new Object[]{replyXd, cheese, commandsDisabled, xdIllegal};
 
     @Autowired
     UserService userService;
@@ -43,10 +42,6 @@ public class MessageHandler {
     SettingsService settingsService;
 
     public MessageHandler() throws IOException {
-        for (int i = 0; i < variablesToLoadIntoFromSettingsToLoadOnStartupArray.length; i++) {
-            variablesToLoadIntoFromSettingsToLoadOnStartupArray[i] =
-                    settingsService.getSettingById(settingsToLoadOnStartupArray[i]).getBool();
-        }
     }
 
     public boolean isAuthorAdmin(@Nonnull GuildMessageReceivedEvent event) {
@@ -67,6 +62,13 @@ public class MessageHandler {
         userService.addUserIfMissing(user.getId());
         user.setMuted(false);
         userService.updateUser(user);
+    }
+
+    public void startup() {
+        replyXd = settingsService.getSettingById(settingsToLoadOnStartupArray[0]).getBool();
+        cheese = settingsService.getSettingById(settingsToLoadOnStartupArray[1]).getBool();
+        commandsDisabled = settingsService.getSettingById(settingsToLoadOnStartupArray[2]).getBool();
+        xdIllegal = settingsService.getSettingById(settingsToLoadOnStartupArray[3]).getBool();
     }
 
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
