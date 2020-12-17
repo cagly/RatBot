@@ -33,6 +33,9 @@ public class MessageHandler {
     Boolean replyXd = false;
     Commands commands = new Commands();
 
+    String[] settingsToLoadOnStartupArray = new String[]{"replyXd", "cheese", "commandsDisabled", "xdIllegal"};
+    Object[] variablesToLoadIntoFromSettingsToLoadOnStartupArray = new Object[]{replyXd, cheese, commandsDisabled, xdIllegal};
+
     @Autowired
     UserService userService;
 
@@ -40,6 +43,10 @@ public class MessageHandler {
     SettingsService settingsService;
 
     public MessageHandler() throws IOException {
+        for (int i = 0; i < variablesToLoadIntoFromSettingsToLoadOnStartupArray.length; i++) {
+            variablesToLoadIntoFromSettingsToLoadOnStartupArray[i] =
+                    settingsService.getSettingById(settingsToLoadOnStartupArray[i]).getBool();
+        }
     }
 
     public boolean isAuthorAdmin(@Nonnull GuildMessageReceivedEvent event) {
