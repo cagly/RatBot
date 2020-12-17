@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.aspectj.bridge.IMessageHandler;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -96,12 +97,14 @@ public class Commands {
     private void legalizeXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("'xd' has been legalized.").queue();
         System.out.println("'xd' has been legalized.");
+        messageHandler.getSettingsService().saveSettingBoolean("xdIllegal", false);
         messageHandler.setXdIllegal(false);
     }
 
     private void prohibitXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("'xd' has been prohibited.").queue();
         System.out.println("'xd' has been prohibited.");
+        messageHandler.getSettingsService().saveSettingBoolean("xdIllegal", true);
         messageHandler.setXdIllegal(true);
     }
 
@@ -125,15 +128,18 @@ public class Commands {
 
     private void disableCommands(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("Commands are now disabled.").queue();
+        messageHandler.getSettingsService().saveSettingBoolean("commandsDisabled", true);
         messageHandler.setCommandsDisabled(true);
     }
 
     private void replyXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         if (messageHandler.getReplyXd()) {
             event.getMessage().getChannel().sendMessage("We xd alone.").queue();
+            messageHandler.getSettingsService().saveSettingBoolean("replyXd", false);
             messageHandler.setReplyXd(false);
         } else {
             event.getMessage().getChannel().sendMessage("We xd together.").queue();
+            messageHandler.getSettingsService().saveSettingBoolean("replyXd", true);
             messageHandler.setReplyXd(true);
         }
     }
@@ -160,6 +166,7 @@ public class Commands {
 
     private void cheese(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("Cheese activated").queue();
+        messageHandler.getSettingsService().saveSettingBoolean("cheese", true);
         messageHandler.setCheese(true);
     }
 
@@ -180,6 +187,7 @@ public class Commands {
 
     private void unCheese(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("Cheese deactivated").queue();
+        messageHandler.getSettingsService().saveSettingBoolean("cheese", false);
         messageHandler.setCheese(false);
     }
 
@@ -191,8 +199,9 @@ public class Commands {
         event.getMessage().getChannel().sendMessage(messageHandler.getJokes().getJoke()).queue();
     }
 
-    public boolean enableCommands(GuildMessageReceivedEvent event) {
+    public boolean enableCommands(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("Commands are now enabled.").queue();
+        messageHandler.getSettingsService().saveSettingBoolean("commandsDisabled", false);
         return false;
     }
 }

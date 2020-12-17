@@ -2,6 +2,7 @@ package bot.rat.messages;
 
 import bot.rat.Jokes;
 import bot.rat.entities.UserEntity;
+import bot.rat.services.SettingsService;
 import bot.rat.services.UserService;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
@@ -34,6 +35,9 @@ public class MessageHandler {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    SettingsService settingsService;
 
     public MessageHandler() throws IOException {
     }
@@ -133,7 +137,7 @@ public class MessageHandler {
 
     private void commandEnableHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
         if (message.equals("ec") || message.equals("enable commands")) {
-            commandsDisabled = commands.enableCommands(event);
+            commandsDisabled = commands.enableCommands(event, this);
         }
     }
 
@@ -202,5 +206,9 @@ public class MessageHandler {
 
     public Jokes getJokes() {
         return jokes;
+    }
+
+    public SettingsService getSettingsService() {
+        return settingsService;
     }
 }
