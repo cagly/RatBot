@@ -83,7 +83,7 @@ public class Commands {
             adminMessage = "You are not an admin and ";
         }
         if (user.getMuted()) {
-            muteMessage = "you are muted";
+            muteMessage = "you are muted.";
         } else {
             muteMessage = "you are not muted.";
         }

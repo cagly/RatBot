@@ -85,7 +85,9 @@ public class MessageHandler {
                     if (cheese) {
                         cheeseHandler(event);
                     }
-                    manageIllegalMessage(event);
+                    if (!manageIllegalMessage(event)){
+                        userService.giveUserPoints(event);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -94,7 +96,7 @@ public class MessageHandler {
         }
     }
 
-    private void manageIllegalMessage(@Nonnull GuildMessageReceivedEvent event) {
+    private boolean manageIllegalMessage(@Nonnull GuildMessageReceivedEvent event) {
 //        char[] chars = event.getMessage().getContentRaw().replaceAll(illegalStringSeperators, "").toCharArray();
 //        boolean xFound = false;
 //        for (char c : chars) {
@@ -119,10 +121,12 @@ public class MessageHandler {
         if (event.getMessage().getContentRaw().toLowerCase().contains("xd")) {
             if (xdIllegal && !isAuthorAdmin(event)) {
                 event.getMessage().delete().queue();
+                return true;
             } else if (replyXd) {
                 event.getMessage().getChannel().sendMessage("xd").queue();
             }
         }
+        return false;
     }
 
     private void commandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
