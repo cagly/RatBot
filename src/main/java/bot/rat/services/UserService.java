@@ -50,10 +50,8 @@ public class UserService {
         String message = event.getMessage().getContentRaw();
         Random rand = new Random();
         rand.setSeed(message.hashCode());
-        int num = rand.nextInt();
-        while (num > 100 || num < -100) {
-            num = num / 10;
-        }
+        int num = rand.nextInt(201);
+        num = num - 100;
         UserEntity user = userRepository.findById(event.getAuthor().getId()).get();
         user.setPoints(user.getPoints() + num);
         userRepository.save(user);
