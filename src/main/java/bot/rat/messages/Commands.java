@@ -52,9 +52,10 @@ public class Commands {
             myStats(event, messageHandler);
         } else if (message.length() > 5 && message.substring(0,5).equals("stats")) {
             pingedStats(event, messageHandler, message);
-        } else if (message.equals("pointboard")) {
-            pointBoard(event, messageHandler);
         }
+//        else if (message.equals("pointboard")) {
+//            pointBoard(event, messageHandler);
+//        }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
@@ -170,8 +171,7 @@ public class Commands {
                 "code - I link you my source code.\n" +
                 "reply xd - Toggle unified xd.\n" +
                 "stats - I display your stats.\n" +
-                "stats @Someone - Display someone's stats.\n" +
-                "pointboard - Show points of online people.").queue();
+                "stats @Someone - Display someone's stats.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
