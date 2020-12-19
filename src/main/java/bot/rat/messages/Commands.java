@@ -171,7 +171,7 @@ public class Commands {
                 "reply xd - Toggle unified xd.\n" +
                 "stats - I display your stats.\n" +
                 "stats @Someone - Display someone's stats.\n" +
-                "pointboard - Show people's points.").queue();
+                "pointboard - Show points of online people.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {

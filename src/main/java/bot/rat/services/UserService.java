@@ -62,7 +62,7 @@ public class UserService {
 
     public List<UserEntity> getPointBoardFromDb(){
         List<UserEntity> userList = userRepository.findAll();
-        userList.sort(Comparator.comparingInt(UserEntity::getPoints));
+        userList.sort(Comparator.comparingInt(UserEntity::getPoints).reversed());
         return userList;
     }
 }
