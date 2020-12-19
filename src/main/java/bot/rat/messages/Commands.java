@@ -28,6 +28,8 @@ public class Commands {
             disableCommands(event, messageHandler);
         } else if (message.equals("test")) {
             event.getAuthor().getJDA().getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").queue();
+        } else if (message.length() > 13 && message.substring(0,14).equals("give me points")) {
+            giveNPoints(event, messageHandler, message.substring(14));
         }
     }
 
@@ -61,6 +63,14 @@ public class Commands {
 //        }
     }
 
+    private void giveNPoints(GuildMessageReceivedEvent event, MessageHandler handler, String message) {
+        try {
+            Integer n = Integer.parseInt(message);
+            handler.getUserService().giveUserNPoints(event.getAuthor().getId(), n);
+        } catch (Exception e) {
+            event.getMessage().getChannel().sendMessage("Dude you fucking suck.");
+        }
+    }
     private void pointBoard(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
         List<UserEntity> topList = messageHandler.getUserService().getPointBoardFromDb();
         String board = "Point Hiscores:\n";
