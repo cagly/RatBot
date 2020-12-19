@@ -1,6 +1,7 @@
 package bot.rat.messages;
 
 import bot.rat.entities.UserEntity;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
@@ -51,10 +52,25 @@ public class Commands {
             myStats(event, messageHandler);
         } else if (message.length() > 5 && message.substring(0,5).equals("stats")) {
             pingedStats(event, messageHandler, message);
+        } else if (message.equals("pointboard")) {
+            pointBoard(event, messageHandler);
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
+    }
+
+    private void pointBoard(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+        List<UserEntity> topList = messageHandler.getUserService().getPointBoardFromDb();
+        String board = "Point Hiscores:\n";
+        System.out.println(topList.toString());
+        for (UserEntity user : topList) {
+            Member member = event.getGuild().getMemberById(user.getId());
+            if (member != null){
+                board += member.getEffectiveName() + ", " + user.getPoints() + " points.\n";
+            }
+        }
+        event.getMessage().getChannel().sendMessage(board).queue();
     }
 
 //    private void sessionZero(GuildMessageReceivedEvent event) {
@@ -154,7 +170,8 @@ public class Commands {
                 "code - I link you my source code.\n" +
                 "reply xd - Toggle unified xd.\n" +
                 "stats - I display your stats.\n" +
-                "stats @Someone - Display someone's stats.").queue();
+                "stats @Someone - Display someone's stats.\n" +
+                "pointboard - Show people's points.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {

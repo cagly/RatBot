@@ -8,6 +8,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import javax.jws.soap.SOAPBinding;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -55,5 +58,11 @@ public class UserService {
         UserEntity user = userRepository.findById(event.getAuthor().getId()).get();
         user.setPoints(user.getPoints() + num);
         userRepository.save(user);
+    }
+
+    public List<UserEntity> getPointBoardFromDb(){
+        List<UserEntity> userList = userRepository.findAll();
+        userList.sort(Comparator.comparingInt(UserEntity::getPoints));
+        return userList;
     }
 }

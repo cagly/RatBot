@@ -224,4 +224,8 @@ public class MessageHandler {
     public SettingsService getSettingsService() {
         return settingsService;
     }
+
+    public UserService getUserService() {
+        return userService;
+    }
 }
