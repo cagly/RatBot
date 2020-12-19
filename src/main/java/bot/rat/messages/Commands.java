@@ -29,7 +29,7 @@ public class Commands {
         } else if (message.equals("test")) {
             event.getAuthor().getJDA().getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").queue();
         } else if (message.length() > 13 && message.substring(0,14).equals("give me points")) {
-            giveNPoints(event, messageHandler, message.substring(14));
+            giveNPoints(event, messageHandler, message.substring(15));
         }
     }
 
@@ -67,8 +67,9 @@ public class Commands {
         try {
             Integer n = Integer.parseInt(message);
             handler.getUserService().giveUserNPoints(event.getAuthor().getId(), n);
+            event.getMessage().getChannel().sendMessage("You got it, boss!").queue();
         } catch (Exception e) {
-            event.getMessage().getChannel().sendMessage("Dude you fucking suck.");
+            event.getMessage().getChannel().sendMessage("Dude you fucking suck.").queue();
         }
     }
     private void pointBoard(GuildMessageReceivedEvent event, MessageHandler messageHandler) {

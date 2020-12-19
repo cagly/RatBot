@@ -50,9 +50,12 @@ public class UserService {
     }
 
     public void giveUserNPoints(String id, int n) {
-        UserEntity user = userRepository.findById(id).get();
-        user.setPoints(user.getPoints() + n);
-        userRepository.save(user);
+        Optional<UserEntity> ouser = userRepository.findById(id);
+        if (ouser.isPresent()) {
+            UserEntity user = ouser.get();
+            user.setPoints(user.getPoints() + n);
+            userRepository.save(user);
+        }
     }
 
     public void giveUserPoints(GuildMessageReceivedEvent event){
