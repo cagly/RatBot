@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -40,7 +42,10 @@ public class Bot extends ListenerAdapter {
         intentList.add(GatewayIntent.DIRECT_MESSAGES);
         intentList.add(GatewayIntent.DIRECT_MESSAGE_TYPING);
         JDA jda = JDABuilder.createDefault(
-                BotToken.TOKEN, intentList).build();
+                BotToken.TOKEN, intentList)
+                .setChunkingFilter(ChunkingFilter.ALL)
+                .setMemberCachePolicy(MemberCachePolicy.ALL)
+                .build();
         jda.addEventListener(bot);
         jda.awaitReady();
         jda.getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").complete(true);

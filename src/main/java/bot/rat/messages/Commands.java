@@ -54,10 +54,9 @@ public class Commands {
             myStats(event, messageHandler);
         } else if (message.length() > 5 && message.substring(0,5).equals("stats")) {
             pingedStats(event, messageHandler, message);
+        } else if (message.equals("pointboard")) {
+            pointBoard(event, messageHandler);
         }
-//        else if (message.equals("pointboard")) {
-//            pointBoard(event, messageHandler);
-//        }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
@@ -78,7 +77,7 @@ public class Commands {
         System.out.println(topList.toString());
         for (UserEntity user : topList) {
             Member member = event.getGuild().getMemberById(user.getId());
-            if (member != null){
+            if (member != null && !member.getUser().isBot()){
                 board += member.getEffectiveName() + ", " + user.getPoints() + " points.\n";
             }
         }
