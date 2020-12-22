@@ -4,6 +4,7 @@ import bot.rat.entities.UserEntity;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -41,7 +42,7 @@ public class Commands {
         } else if (message.equals("cheese")) {
             cheese(event, messageHandler);
         } else if (message.length() > 6 && message.substring(0,6).equals("cheese")) {
-            cheeseSomeone(event, message);
+            cheeseSomeone(event, messageHandler, message.substring(7));
         } else if (message.equals("uncheese")) {
             unCheese(event, messageHandler);
         }  else if (message.equals("code")) {
@@ -181,7 +182,8 @@ public class Commands {
                 "code - I link you my source code.\n" +
                 "reply xd - Toggle unified xd.\n" +
                 "stats - I display your stats.\n" +
-                "stats @Someone - Display someone's stats.").queue();
+                "stats @Someone - Display someone's stats.\n" +
+                "pointboard - Show point leaderboards.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
@@ -198,16 +200,14 @@ public class Commands {
         messageHandler.setCheese(true);
     }
 
-    private void cheeseSomeone(GuildMessageReceivedEvent event, String message) {
+    private void cheeseSomeone(GuildMessageReceivedEvent event, MessageHandler messageHandler, String message) {
         try {
-//            String id = message.substring(10, message.length() - 1);
-//            Role ratRole = event.getAuthor().getJDA().getRolesByName("Cheese", false).get(0);
-//            event.getMessage().getGuild().addRoleToMember(id, ratRole).complete();
-//            MessageChannel cheeseChannel = event.getMessage().getGuild().getTextChannelsByName("cheese-channel", false).get(0);
-//            cheeseChannel.sendMessage("<@" + id + ">").complete();
-//            event.getMessage().getGuild().removeRoleFromMember(id, ratRole).complete();
+            message = message.substring(3, message.length() - 1);
+            User cheesee = event.getGuild().getMemberById(message).getUser();
+            PrivateChannel chan = cheesee.openPrivateChannel().complete(true);
+            String cheeseUrl = messageHandler.getCheesePics().getJoke();
+            chan.sendMessage(cheeseUrl).queue();
             event.getMessage().delete().queue();
-//            event.getMessage().getChannel().sendMessage("Cheesing someone is closed indefinitely.").queue();
         } catch (Exception e) {
             System.out.println("Cheese Someone system failed");
         }

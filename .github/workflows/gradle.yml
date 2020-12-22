@@ -31,7 +31,7 @@ jobs:
      - name: Make resources directory
        run: mkdir ~/actions-runner/_work/RatBot/RatBot/build/libs/resources
      - name: Copy resources
-       run: cp -f ~/actions-runner/_work/RatBot/RatBot/resources/Jokes.txt ~/actions-runner/_work/RatBot/RatBot/build/libs/resources
+       run: cp -f ~/actions-runner/_work/RatBot/RatBot/resources/* ~/actions-runner/_work/RatBot/RatBot/build/libs/resources
 
   deploy:
     needs: build

@@ -1,5 +1,6 @@
 package bot.rat.messages;
 
+import bot.rat.CheesePics;
 import bot.rat.Jokes;
 import bot.rat.entities.UserEntity;
 import bot.rat.services.SettingsService;
@@ -29,6 +30,7 @@ public class MessageHandler {
     Boolean xdIllegal = false;
     Boolean cheese = false;
     Jokes jokes = new Jokes();
+    CheesePics cheesePics = new CheesePics();
     Boolean commandsDisabled = false;
     Boolean replyXd = false;
     Commands commands = new Commands();
@@ -227,5 +229,9 @@ public class MessageHandler {
 
     public UserService getUserService() {
         return userService;
+    }
+
+    public CheesePics getCheesePics() {
+        return cheesePics;
     }
 }
