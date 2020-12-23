@@ -57,10 +57,33 @@ public class Commands {
             pingedStats(event, messageHandler, message);
         } else if (message.equals("pointboard")) {
             pointBoard(event, messageHandler);
+        } else if (message.length() > 8 && message.substring(0,8).equals("coinflip")) {
+            coinflip(event, messageHandler, message.substring(9));
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
+    }
+
+    public void coinflip(GuildMessageReceivedEvent event, MessageHandler handler, String message) {
+        try {
+            String coinSide = message.substring(0, 5);
+            String id = event.getAuthor().getId();
+            if (message.substring(6).length() > 15 ||
+                    Long.parseLong(message.substring(6)) > 2147483647) {
+                event.getChannel().sendMessage("Sorry, Sempai, I can only handle integers. UwU").queue();
+                return;
+            }
+            int n = Integer.parseInt(message.substring(6));
+            boolean bool = handler.getUserService().gamblePointsCoinflip(event, id, coinSide, n);
+            if (!bool) {
+                event.getChannel().sendMessage("Dude, you're so fucking dumb.").queue();
+            }
+        } catch (NumberFormatException e) {
+            event.getChannel().sendMessage("Try entering a number, dumbass.").queue();
+        } catch (Exception e) {
+            event.getChannel().sendMessage("Congratulations, you're stupid.").queue();
+        }
     }
 
     private void giveNPoints(GuildMessageReceivedEvent event, MessageHandler handler, String message) {
@@ -183,7 +206,8 @@ public class Commands {
                 "reply xd - Toggle unified xd.\n" +
                 "stats - I display your stats.\n" +
                 "stats @Someone - Display someone's stats.\n" +
-                "pointboard - Show point leaderboards.").queue();
+                "pointboard - Show point leaderboards.\n" +
+                "coinflip [heads/tails] [number] - Gamble away your hard-earned points.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {

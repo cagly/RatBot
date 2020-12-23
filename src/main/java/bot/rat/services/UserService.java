@@ -74,4 +74,50 @@ public class UserService {
         userList.sort(Comparator.comparingInt(UserEntity::getPoints).reversed());
         return userList;
     }
+
+    public boolean userHasNPoints(String id, Integer n) {
+        UserEntity user = userRepository.findById(id).get();
+        return user.getPoints() >= n;
+    }
+
+    public boolean gamblePointsCoinflip(GuildMessageReceivedEvent event, String id, String coinSide, Integer n) {
+        // Heads = 0, Tails = 1
+        if (n < 1) {
+            return false;
+        }
+        if (!userHasNPoints(id, n)) {
+            return false;
+        }
+        Random rand = new Random();
+        int res = rand.nextInt(2);
+        String coinflipResult = res == 1 ? "Tails" : "Heads";
+        if (coinSide.toLowerCase().equals("heads")) {
+            event.getMessage().getChannel().sendMessage("You picked " + coinSide + " and gambled " + n + " points.\n" +
+                    "Coinflip result: " + coinflipResult).queue();
+            if (res == 0) {
+                // Win
+                event.getMessage().getChannel().sendMessage("You've won " + n + " points! Wow so amazing!").queue();
+                giveUserNPoints(id, n);
+                return true;
+            } else {
+                event.getMessage().getChannel().sendMessage("Damn, you lost. That's pretty embarrassing.").queue();
+                giveUserNPoints(id, -n);
+                return true;
+            }
+        } else if (coinSide.toLowerCase().equals("tails")) {
+            event.getMessage().getChannel().sendMessage("You picked " + coinSide + " and gambled " + n + " points.\n" +
+                    "Coinflip result: " + coinflipResult).queue();
+            if (res == 1) {
+                // Win
+                event.getMessage().getChannel().sendMessage("Congratulations, you won! You are now " + n + " points richer.").queue();
+                giveUserNPoints(id, n);
+                return true;
+            } else {
+                event.getMessage().getChannel().sendMessage("Wow, you lost? I almost feel bad.").queue();
+                giveUserNPoints(id, -n);
+                return true;
+            }
+        }
+        return false;
+    }
 }
