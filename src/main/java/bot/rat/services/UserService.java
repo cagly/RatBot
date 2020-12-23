@@ -30,6 +30,10 @@ public class UserService {
 //        return ans;
 //    }
 
+    public List<UserEntity> getAll() {
+        return userRepository.findAll();
+    }
+
     public UserEntity getUserById(String id) {
         Optional<UserEntity> opUser = userRepository.findById(id);
         return opUser.orElseGet(() -> addUserIfMissing(id));

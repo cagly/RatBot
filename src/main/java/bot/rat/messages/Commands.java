@@ -13,6 +13,7 @@ import org.aspectj.bridge.IMessageHandler;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Random;
 
 public class Commands {
 
@@ -59,10 +60,32 @@ public class Commands {
             pointBoard(event, messageHandler);
         } else if (message.length() > 8 && message.substring(0,8).equals("coinflip")) {
             coinflip(event, messageHandler, message.substring(9));
+        } else if (message.equals("polarize")) {
+            polarize(event, messageHandler);
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
+    }
+
+    public void polarize(GuildMessageReceivedEvent event, MessageHandler handler) {
+        String id = event.getAuthor().getId();
+        Random rand = new Random();
+        if (handler.getUserService().userHasNPoints(id, 1000)) {
+            List<UserEntity> users = handler.getUserService().getAll();
+            int choice = rand.nextInt(users.size());
+            UserEntity randomUser = users.get(choice);
+            randomUser.setPoints(-1 * randomUser.getPoints());
+            handler.getUserService().updateUser(randomUser);
+            if (randomUser.getId().equals(id)) {
+                handler.getUserService().giveUserNPoints(id, 1000);
+            } else {
+                handler.getUserService().giveUserNPoints(id, -1000);
+            }
+            event.getChannel().sendMessage("Your victim was " + event.getGuild().getMemberById(randomUser.getId()).getEffectiveName() + ".").queue();
+        } else {
+            event.getChannel().sendMessage("You're too poor, man.").queue();
+        }
     }
 
     public void coinflip(GuildMessageReceivedEvent event, MessageHandler handler, String message) {
@@ -207,7 +230,8 @@ public class Commands {
                 "stats - I display your stats.\n" +
                 "stats @Someone - Display someone's stats.\n" +
                 "pointboard - Show point leaderboards.\n" +
-                "coinflip [heads/tails] [number] - Gamble away your hard-earned points.").queue();
+                "coinflip [heads/tails] [number] - Gamble away your hard-earned points.\n" +
+                "polarize - Costs 1000 points. Random person's points are polarized.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
