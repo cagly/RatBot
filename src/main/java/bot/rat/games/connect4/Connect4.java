@@ -44,7 +44,7 @@ public class Connect4 {
             }
         }
         if (!blockedFromCommands.contains(event.getAuthor().getId())
-                && (event.getChannel().getName().equals("games")
+                && (event.getChannel().getName().equals("rat-games")
                 || event.getChannel().getName().equals("rat-hole"))) {
             blockedFromCommands.add(event.getAuthor().getId());
             if (message.equals("new game")) {
