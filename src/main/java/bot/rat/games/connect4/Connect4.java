@@ -105,7 +105,8 @@ public class Connect4 {
                         "new game - Start a new game against RatBot\n" +
                         "play row [1-7] - Play a piece in the specified row. Rows are enumerated from left to right.\n" +
                         "my board - Shows you your board.\n" +
-                        "end game - End your current game against RatBot.\n\n" +
+                        "end game - End your current game against RatBot.\n" +
+                        "tutorial - Display this message.\n\n" +
                         "Rules of the game: \n" +
                         "https://en.wikipedia.org/wiki/Connect_Four").queue();
             }
