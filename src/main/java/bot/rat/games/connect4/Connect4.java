@@ -85,9 +85,9 @@ public class Connect4 {
                 } else {
                     event.getChannel().sendMessage("You don't have an active game, friendo.").queue();
                 }
-            } else if (message.length() > 9 && message.substring(0, 8).equals("play row")) {
+            } else if (message.length() > 5 && message.substring(0, 4).equals("play")) {
                 if (ongoingGames.keySet().contains(event.getAuthor().getId())) {
-                    String desiredRow = message.substring(9);
+                    String desiredRow = message.substring(5);
                     // 0 = error, 1 = winning move, 2 = not winning move
                     int ans = MonteCarlo.doesPlayerMoveWin(ongoingGames.get(event.getAuthor().getId()), 1, desiredRow);
                     if (ans == 0) {
@@ -103,7 +103,7 @@ public class Connect4 {
             } else if (message.equals("tutorial")) {
                 event.getChannel().sendMessage("Here are the commands for the Connect 4 game: \n" +
                         "new game - Start a new game against RatBot\n" +
-                        "play row [1-7] - Play a piece in the specified row. Rows are enumerated from left to right.\n" +
+                        "play [1-7] - Play a piece in the specified column. Columns are enumerated from left to right.\n" +
                         "my board - Shows you your board.\n" +
                         "end game - End your current game against RatBot.\n" +
                         "tutorial - Display this message.\n\n" +
@@ -181,7 +181,7 @@ public class Connect4 {
         } else {
             ongoingGames.put(id, newPos);
             printBoard(id, event);
-            event.getChannel().sendMessage("Your move, pal. Which row would you like to play a piece in?").queue();
+            event.getChannel().sendMessage("Your move, pal. Which column would you like to play a piece in?").queue();
         }
     }
 
