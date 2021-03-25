@@ -12,6 +12,17 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.aspectj.bridge.IMessageHandler;
 
 import javax.annotation.Nonnull;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Random;
 
@@ -62,10 +73,51 @@ public class Commands {
             coinflip(event, messageHandler, message.substring(9));
         } else if (message.equals("polarize")) {
             polarize(event, messageHandler);
+        } else if (message.equals("test image")) {
+            try {
+                testImage(event, messageHandler);
+            } catch (Exception e) {
+                event.getChannel().sendMessage("Nghhh, uff, le error has occurred >W< *nuzzles*").queue();
+                event.getChannel().sendMessage(e.getCause().toString()).queue();
+            }
+        } else if (message.length() > 8 && message.substring(0,8).equals("connect4")) {
+            messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(9));
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
+    }
+
+    public void testImage(GuildMessageReceivedEvent event, MessageHandler handler) throws IOException {
+        // GET AVATAR IMAGE AND SAVE IT IN FILES
+        TextChannel channel = event.getChannel();
+        URL url = new URL(event.getAuthor().getAvatarUrl());
+        URLConnection uc = url.openConnection();
+        uc.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+        BufferedImage img = ImageIO.read(uc.getInputStream());
+        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getAuthor().getId() + ".png");
+        if (!file.exists()) {
+            ImageIO.write(img, "png", file);
+        }
+        event.getChannel().sendFile(file).queue();
+
+        // CREATE AND DRAW?
+        int drawingWidth = 1400;
+        int drawingHeight = 1200;
+        int circleSize = 200;
+        BufferedImage newImg = new BufferedImage(drawingWidth, drawingHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage fileImage = ImageIO.read(file);
+        Graphics2D g2d = newImg.createGraphics();
+        g2d.setColor(Color.WHITE);
+        for (int i = 0; i < drawingWidth/circleSize; i++) {
+            for (int j = 0; j < drawingHeight/circleSize; j++) {
+                g2d.setClip(new Ellipse2D.Float(i*circleSize, j*circleSize, circleSize, circleSize));
+                g2d.drawImage(fileImage, i* circleSize, j * circleSize, circleSize, circleSize, null);
+            }
+        }
+        File drawing = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\test.png");
+        ImageIO.write(newImg, "png", drawing);
+        event.getChannel().sendFile(drawing).queue();
     }
 
     public void polarize(GuildMessageReceivedEvent event, MessageHandler handler) {

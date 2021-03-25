@@ -3,8 +3,10 @@ package bot.rat.messages;
 import bot.rat.CheesePics;
 import bot.rat.Jokes;
 import bot.rat.entities.UserEntity;
+import bot.rat.games.connect4.Connect4;
 import bot.rat.services.SettingsService;
 import bot.rat.services.UserService;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class MessageHandler {
     Boolean commandsDisabled = false;
     Boolean replyXd = false;
     Commands commands = new Commands();
+    Connect4 connect4 = new Connect4(this);
+    String selfId;
 
     String[] settingsToLoadOnStartupArray = new String[]{"replyXd", "cheese", "commandsDisabled", "xdIllegal"};
 
@@ -233,5 +237,9 @@ public class MessageHandler {
 
     public CheesePics getCheesePics() {
         return cheesePics;
+    }
+
+    public Connect4 getConnect4() {
+        return connect4;
     }
 }
