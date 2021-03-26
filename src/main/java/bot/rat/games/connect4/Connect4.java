@@ -49,6 +49,7 @@ public class Connect4 {
             blockedFromCommands.add(event.getAuthor().getId());
             if (message.equals("new game")) {
                 if (!ongoingGames.keySet().contains(event.getAuthor().getId())) {
+                    forceGetAvatar(event.getAuthor().getId(), event);
                     startNewBoard(event.getAuthor().getId());
                     try {
                         event.getChannel().sendMessage("A new board has been set, " + event.getMember().getEffectiveName()).queue();
@@ -169,6 +170,19 @@ public class Connect4 {
             uc.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
             BufferedImage img = ImageIO.read(uc.getInputStream());
             ImageIO.write(img, "png", file);
+        }
+    }
+
+    void forceGetAvatar(String id, GuildMessageReceivedEvent event) {
+//        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getAuthor().getId() + ".png");
+        try {
+            File file = new File("/home/ubuntu/RatPics/" + event.getAuthor().getId() + ".png");
+            URL url = new URL(event.getAuthor().getAvatarUrl());
+            URLConnection uc = url.openConnection();
+            uc.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+            BufferedImage img = ImageIO.read(uc.getInputStream());
+            ImageIO.write(img, "png", file);
+        } catch (IOException e) {
         }
     }
 
