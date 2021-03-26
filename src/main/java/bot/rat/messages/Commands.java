@@ -73,13 +73,6 @@ public class Commands {
             coinflip(event, messageHandler, message.substring(9));
         } else if (message.equals("polarize")) {
             polarize(event, messageHandler);
-        } else if (message.equals("test image")) {
-            try {
-                testImage(event, messageHandler);
-            } catch (Exception e) {
-                event.getChannel().sendMessage("Nghhh, uff, le error has occurred >W< *nuzzles*").queue();
-                event.getChannel().sendMessage(e.getCause().toString()).queue();
-            }
         } else if (message.length() > 8 && message.substring(0,8).equals("connect4")) {
             messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(9));
         }
