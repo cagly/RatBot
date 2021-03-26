@@ -103,6 +103,7 @@ public class Connect4 {
                 }
             } else if (message.equals("tutorial")) {
                 event.getChannel().sendMessage("Here are the commands for the Connect 4 game: \n" +
+                        "Command Prefix: '!rat connect4 ' or '!rat c4 '\n" +
                         "new game - Start a new game against RatBot\n" +
                         "play [1-7] - Play a piece in the specified column. Columns are enumerated from left to right.\n" +
                         "my board - Shows you your board.\n" +

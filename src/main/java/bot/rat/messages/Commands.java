@@ -75,6 +75,8 @@ public class Commands {
             polarize(event, messageHandler);
         } else if (message.length() > 8 && message.substring(0,8).equals("connect4")) {
             messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(9));
+        } else if (message.length() > 2 && message.substring(0,2).equals("c4")) {
+            messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(3));
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
