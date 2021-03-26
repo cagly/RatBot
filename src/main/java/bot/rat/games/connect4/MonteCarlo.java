@@ -206,7 +206,7 @@ public class MonteCarlo {
                 return new int[][]{{125}};
             }
             pos = makeMove(pos, move, player_side);
-            event.getChannel().sendMessage("RatBot put a piece in row " + (move[1] + 1)).queue();
+            event.getChannel().sendMessage("RatBot put a piece in column " + (move[1] + 1)).queue();
             if (isDrawn(pos)) {
                 return new int[][]{{126}};
             }
