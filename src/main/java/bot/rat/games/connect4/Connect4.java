@@ -39,7 +39,7 @@ public class Connect4 {
                 selfId = event.getJDA().getSelfUser().getId();
                 getRatBotAvatar(event.getJDA());
             } catch (Exception e) {
-                event.getChannel().sendMessage("Unnnff, major fucky wucky, good luck brosefh.").queue();
+                event.getChannel().sendMessage("Unnnff, major fucky wucky, good luck brosef.").queue();
                 return;
             }
         }
