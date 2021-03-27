@@ -23,7 +23,9 @@ public class Connect4 {
 
     // Discord ID - Board position
     Map<String, int[][]> ongoingGames;
-    // easy = 30, medium = 100, hard = 500
+    Integer easyIters = 25;
+    Integer mediumIters = 75;
+    Integer hardIters = 500;
     Map<String, Integer> ongoingDifficulties;
     Set<String> blockedFromCommands;
     Random rand;
@@ -50,7 +52,7 @@ public class Connect4 {
                 && (event.getChannel().getName().equals("rat-games")
                 || event.getChannel().getName().equals("rat-hole"))) {
             blockedFromCommands.add(event.getAuthor().getId());
-            ongoingDifficulties.putIfAbsent(event.getAuthor().getId(), 100);
+            ongoingDifficulties.putIfAbsent(event.getAuthor().getId(), mediumIters);
             if (message.equals("new game")) {
                 if (!ongoingGames.keySet().contains(event.getAuthor().getId())) {
                     forceGetAvatar(event.getAuthor().getId(), event);
@@ -127,13 +129,13 @@ public class Connect4 {
             } else if (message.length() > 18 && message.substring(0, 17).equals("change difficulty")) {
                 message = message.substring(18);
                 if (message.equals("easy")) {
-                    ongoingDifficulties.put(event.getAuthor().getId(), 30);
+                    ongoingDifficulties.put(event.getAuthor().getId(), easyIters);
                     event.getChannel().sendMessage("Difficulty has been set to easy for " + event.getAuthor().getName()).queue();
                 } else if (message.equals("medium")) {
-                    ongoingDifficulties.put(event.getAuthor().getId(), 100);
+                    ongoingDifficulties.put(event.getAuthor().getId(), mediumIters);
                     event.getChannel().sendMessage("Difficulty has been set to medium for " + event.getAuthor().getName()).queue();
                 } else if (message.equals("hard")) {
-                    ongoingDifficulties.put(event.getAuthor().getId(), 500);
+                    ongoingDifficulties.put(event.getAuthor().getId(), hardIters);
                     event.getChannel().sendMessage("Difficulty has been set to hard for " + event.getAuthor().getName()).queue();
                 } else {
                     event.getChannel().sendMessage("What are you talking about, dude?").queue();
@@ -145,12 +147,12 @@ public class Connect4 {
 
     String getDifficultyName(String id) {
         String diffculty = "unknown";
-        Integer hardness = ongoingDifficulties.get(id);
-        if (hardness == 30) {
+        int hardness = ongoingDifficulties.get(id);
+        if (hardness == easyIters) {
             diffculty = "easy";
-        } else if (hardness == 100) {
+        } else if (hardness == mediumIters) {
             diffculty = "medium";
-        } else if (hardness == 500) {
+        } else if (hardness == hardIters) {
             diffculty = "hard";
         }
         return diffculty;
