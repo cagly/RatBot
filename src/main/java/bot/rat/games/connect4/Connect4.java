@@ -23,12 +23,15 @@ public class Connect4 {
 
     // Discord ID - Board position
     Map<String, int[][]> ongoingGames;
+    // easy = 30, medium = 100, hard = 500
+    Map<String, Integer> ongoingDifficulties;
     Set<String> blockedFromCommands;
     Random rand;
     String selfId;
 
     public Connect4(MessageHandler handler) {
         ongoingGames = new HashMap<>();
+        ongoingDifficulties = new HashMap<>();
         blockedFromCommands = new HashSet<>();
         rand = new Random();
     }
@@ -47,6 +50,7 @@ public class Connect4 {
                 && (event.getChannel().getName().equals("rat-games")
                 || event.getChannel().getName().equals("rat-hole"))) {
             blockedFromCommands.add(event.getAuthor().getId());
+            ongoingDifficulties.putIfAbsent(event.getAuthor().getId(), 100);
             if (message.equals("new game")) {
                 if (!ongoingGames.keySet().contains(event.getAuthor().getId())) {
                     forceGetAvatar(event.getAuthor().getId(), event);
@@ -108,9 +112,40 @@ public class Connect4 {
                         "play [1-7] - Play a piece in the specified column. Columns are enumerated from left to right.\n" +
                         "my board - Shows you your board.\n" +
                         "end game - End your current game against RatBot.\n" +
+                        "difficulty - Display the difficulty at which RatBot will play against you.\n" +
+                        "change difficulty [easy/medium/hard] - Change your difficulty.\n" +
                         "tutorial - Display this message.\n\n" +
                         "Rules of the game: \n" +
                         "https://en.wikipedia.org/wiki/Connect_Four").queue();
+            } else if (message.equals("difficulty")) {
+                String diffculty = "unknown";
+                Integer hardness = ongoingDifficulties.get(event.getAuthor().getId());
+                if (hardness == 30) {
+                    diffculty = "easy";
+                } else if (hardness == 100) {
+                    diffculty = "medium";
+                } else if (hardness == 500) {
+                    diffculty = "hard";
+                }
+                try {
+                    event.getChannel().sendMessage("Mister " + event.getMember().getEffectiveName() + ", your current difficulty is " + diffculty).queue();
+                } catch (Exception e) {
+                    event.getChannel().sendMessage("Mister " + event.getAuthor().getName() + ", your current difficulty is " + diffculty).queue();
+                }
+            } else if (message.length() > 18 && message.substring(0, 17).equals("change difficulty")) {
+                message = message.substring(18);
+                if (message.equals("easy")) {
+                    ongoingDifficulties.put(event.getAuthor().getId(), 30);
+                    event.getChannel().sendMessage("Difficulty has been set to easy for " + event.getAuthor().getName()).queue();
+                } else if (message.equals("medium")) {
+                    ongoingDifficulties.put(event.getAuthor().getId(), 100);
+                    event.getChannel().sendMessage("Difficulty has been set to medium for " + event.getAuthor().getName()).queue();
+                } else if (message.equals("hard")) {
+                    ongoingDifficulties.put(event.getAuthor().getId(), 500);
+                    event.getChannel().sendMessage("Difficulty has been set to hard for " + event.getAuthor().getName()).queue();
+                } else {
+                    event.getChannel().sendMessage("What are you talking about, dude?").queue();
+                }
             }
         }
         blockedFromCommands.remove(event.getAuthor().getId());
@@ -188,7 +223,7 @@ public class Connect4 {
     }
 
     void ratPlayMove(String id, GuildMessageReceivedEvent event) {
-        int[][] newPos = MonteCarlo.playRatBotMove(ongoingGames.get(id), 500, event);
+        int[][] newPos = MonteCarlo.playRatBotMove(ongoingGames.get(id), ongoingDifficulties.get(event.getAuthor().getId()), event);
         if (newPos[0][0] == 126) {
             gameDraw(id, event);
         } else if (newPos[0][0] == 125) {
