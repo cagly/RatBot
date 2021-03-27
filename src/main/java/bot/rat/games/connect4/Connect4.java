@@ -118,15 +118,7 @@ public class Connect4 {
                         "Rules of the game: \n" +
                         "https://en.wikipedia.org/wiki/Connect_Four").queue();
             } else if (message.equals("difficulty")) {
-                String diffculty = "unknown";
-                Integer hardness = ongoingDifficulties.get(event.getAuthor().getId());
-                if (hardness == 30) {
-                    diffculty = "easy";
-                } else if (hardness == 100) {
-                    diffculty = "medium";
-                } else if (hardness == 500) {
-                    diffculty = "hard";
-                }
+                String diffculty = getDifficultyName(event.getAuthor().getId());
                 try {
                     event.getChannel().sendMessage("Mister " + event.getMember().getEffectiveName() + ", your current difficulty is " + diffculty).queue();
                 } catch (Exception e) {
@@ -149,6 +141,19 @@ public class Connect4 {
             }
         }
         blockedFromCommands.remove(event.getAuthor().getId());
+    }
+
+    String getDifficultyName(String id) {
+        String diffculty = "unknown";
+        Integer hardness = ongoingDifficulties.get(id);
+        if (hardness == 30) {
+            diffculty = "easy";
+        } else if (hardness == 100) {
+            diffculty = "medium";
+        } else if (hardness == 500) {
+            diffculty = "hard";
+        }
+        return diffculty;
     }
 
     void printBoard(String id, GuildMessageReceivedEvent event) {
@@ -236,31 +241,34 @@ public class Connect4 {
     }
 
     void gameDraw(String id, GuildMessageReceivedEvent event) {
+        String diffString = "on " + getDifficultyName(event.getAuthor().getId()) + " difficulty.";
         printBoard(id, event);
         try {
-            event.getChannel().sendMessage(event.getMember().getEffectiveName() + " drew their game against RatBot.").queue();
+            event.getChannel().sendMessage(event.getMember().getEffectiveName() + " drew their game against RatBot " + diffString).queue();
         } catch (NullPointerException e) {
-            event.getChannel().sendMessage(event.getAuthor().getName() + " drew their game against RatBot.").queue();
+            event.getChannel().sendMessage(event.getAuthor().getName() + " drew their game against RatBot " + diffString).queue();
         }
         ongoingGames.remove(id);
     }
 
     void ratBotWon(String id, GuildMessageReceivedEvent event) {
+        String diffString = "on " + getDifficultyName(event.getAuthor().getId()) + " difficulty.";
         printBoard(id, event);
         try {
-            event.getChannel().sendMessage(event.getMember().getEffectiveName() + " lost their game against RatBot.").queue();
+            event.getChannel().sendMessage(event.getMember().getEffectiveName() + " lost their game against RatBot " + diffString).queue();
         } catch (NullPointerException e) {
-            event.getChannel().sendMessage(event.getAuthor().getName() + " lost their game against RatBot.").queue();
+            event.getChannel().sendMessage(event.getAuthor().getName() + " lost their game against RatBot " + diffString).queue();
         }
         ongoingGames.remove(id);
     }
 
     void ratBotLost(String id, GuildMessageReceivedEvent event) {
+        String diffString = "on " + getDifficultyName(event.getAuthor().getId()) + " difficulty!";
         printBoard(id, event);
         try {
-            event.getChannel().sendMessage(event.getMember().getEffectiveName() + " won their game against RatBot! Not bad, kid.").queue();
+            event.getChannel().sendMessage(event.getMember().getEffectiveName() + " won their game against RatBot " + diffString).queue();
         } catch (NullPointerException e) {
-            event.getChannel().sendMessage(event.getAuthor().getName() + " won their game against RatBot! Not bad, kid.").queue();
+            event.getChannel().sendMessage(event.getAuthor().getName() + " won their game against RatBot " + diffString).queue();
         }
         ongoingGames.remove(id);
     }
