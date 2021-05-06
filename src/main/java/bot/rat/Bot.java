@@ -5,12 +5,22 @@ import bot.rat.privateResources.BotToken;
 import bot.rat.repositories.UserRepository;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Invite;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -41,6 +51,8 @@ public class Bot extends ListenerAdapter {
         intentList.add(GatewayIntent.GUILD_PRESENCES);
         intentList.add(GatewayIntent.DIRECT_MESSAGES);
         intentList.add(GatewayIntent.DIRECT_MESSAGE_TYPING);
+        intentList.add(GatewayIntent.GUILD_MESSAGE_REACTIONS);
+        intentList.add(GatewayIntent.GUILD_EMOJIS);
         JDA jda = JDABuilder.createDefault(
                 BotToken.TOKEN, intentList)
                 .setChunkingFilter(ChunkingFilter.ALL)
@@ -67,5 +79,31 @@ public class Bot extends ListenerAdapter {
             System.out.println("PrivateMessageReceived error with message: " + msg);
         }
         super.onPrivateMessageReceived(event);
+    }
+
+
+    @Override
+    public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
+        if (event.getReactionEmote().getAsCodepoints().equals("U+1f972")) {
+            event.retrieveMessage().complete().addReaction("U+1F972").queue();
+        }
+        super.onMessageReactionAdd(event);
+    }
+
+    @Override
+    public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
+        Message asd = event.retrieveMessage().complete();
+        List<MessageReaction> reactList = asd.getReactions();
+        boolean onlyRat = false;
+        for (MessageReaction react : reactList) {
+            if (react.getReactionEmote().getAsCodepoints().equals("U+1f972") && react.hasCount()
+            && react.getCount() == 1 && react.isSelf()) {
+                onlyRat = true;
+            }
+        }
+        if (onlyRat) {
+            asd.removeReaction("U+1F972").queue();
+        }
+        super.onMessageReactionRemove(event);
     }
 }
