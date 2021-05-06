@@ -60,7 +60,7 @@ public class Bot extends ListenerAdapter {
                 .build();
         jda.addEventListener(bot);
         jda.awaitReady();
-//        jda.getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").complete(true);
+        jda.getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").complete(true);
         bot.messageHandler.startup();
     }
 

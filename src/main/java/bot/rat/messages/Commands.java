@@ -43,6 +43,13 @@ public class Commands {
             event.getAuthor().getJDA().getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").queue();
         } else if (message.length() > 13 && message.substring(0,14).equals("give me points")) {
             giveNPoints(event, messageHandler, message.substring(15));
+        } else if (message.equals("restart")) {
+            try {
+                String[] args = new String[]{"/bin/bash", "-c", "sudo service ratbot restart"};
+                Process proc = new ProcessBuilder(args).start();
+            } catch (IOException e) {
+                event.getChannel().sendMessage("Ratbot could not restart :(").queue();
+            }
         }
     }
 
