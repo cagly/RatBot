@@ -33,9 +33,9 @@ jobs:
      - name: Copy resources
        run: cp -f ~/actions-runner/_work/RatBot/RatBot/resources/* ~/actions-runner/_work/RatBot/RatBot/build/libs/resources
 
-#  deploy:
-#    needs: build
-#    runs-on: self-hosted
-#    steps:
-#     - name: Run RatBot
-#       run: sudo service ratbot restart
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+     - name: Run RatBot
+       run: sudo service ratbot restart
