@@ -160,7 +160,7 @@ public class Connect4 {
 
     void printBoard(String id, GuildMessageReceivedEvent event) {
         try {
-            getAvatar(id, event);
+            getAvatar(event);
         } catch (IOException e) {
             event.getChannel().sendMessage("Your avatar sucks so I won't show you the board.").queue();
             return;
@@ -204,7 +204,7 @@ public class Connect4 {
         }
     }
 
-    void getAvatar(String id, GuildMessageReceivedEvent event) throws IOException {
+    public static void getAvatar(GuildMessageReceivedEvent event) throws IOException {
 //        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getAuthor().getId() + ".png");
         File file = new File("/home/ubuntu/RatPics/" + event.getAuthor().getId() + ".png");
         if (!file.exists()) {
