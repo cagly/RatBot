@@ -1,6 +1,9 @@
 package bot.rat.messages;
 
 import bot.rat.entities.UserEntity;
+import bot.rat.games.connect4.Connect4;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -84,42 +87,44 @@ public class Commands {
             messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(9));
         } else if (message.length() > 2 && message.substring(0,2).equals("c4")) {
             messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(3));
+        } else if (message.length() > 4 && message.substring(0,4).equals("kill")) {
+            kill(event, messageHandler);
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
     }
 
-    public void testImage(GuildMessageReceivedEvent event, MessageHandler handler) throws IOException {
-        // GET AVATAR IMAGE AND SAVE IT IN FILES
-        TextChannel channel = event.getChannel();
-        URL url = new URL(event.getAuthor().getAvatarUrl());
-        URLConnection uc = url.openConnection();
-        uc.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
-        BufferedImage img = ImageIO.read(uc.getInputStream());
-        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getAuthor().getId() + ".png");
+    public void kill(GuildMessageReceivedEvent event, MessageHandler handler) {
+        try {
+            makeAvatar(event);
+            System.out.println(event.getJDA().getSelfUser().getAvatarUrl());
+            Member victim = event.getMessage().getMentionedMembers().get(0);
+            File playerAvatarFile = new File("/home/ubuntu/RatPics/" + victim.getId() + ".png");
+            Emote emote1 = event.getGuild().getEmotesByName("ratbot", true).get(0);
+//            File playerAvatarFile = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + victim.getId() + ".png");
+            Icon icon = Icon.from(playerAvatarFile);
+            Emote emote2 = event.getGuild().createEmote(victim.getId(), icon).complete();
+            String emoji1 = "<:" + emote1.getName() + ":" + emote1.getId() + ">";
+            String emoji2 = "<:" + emote2.getName() + ":" + emote2.getId() + ">";
+            event.getChannel().sendMessage(emoji1 + " :knife: " + emoji2).complete();
+            event.getChannel().sendMessage(":skull_crossbones: " + victim.getEffectiveName() + " is dead :skull_crossbones:").complete();
+            emote2.delete().complete();
+        } catch (IOException e) {
+            event.getChannel().sendMessage("eror").queue();
+        }
+    }
+
+    public static void makeAvatar(GuildMessageReceivedEvent event) throws IOException {
+        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getMessage().getMentionedMembers().get(0).getId() + ".png");
+//        File file = new File("/home/ubuntu/RatPics/" + event.getAuthor().getId() + ".png");
         if (!file.exists()) {
+            URL url = new URL(event.getMessage().getMentionedMembers().get(0).getUser().getAvatarUrl());
+            URLConnection uc = url.openConnection();
+            uc.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
+            BufferedImage img = ImageIO.read(uc.getInputStream());
             ImageIO.write(img, "png", file);
         }
-        event.getChannel().sendFile(file).queue();
-
-        // CREATE AND DRAW?
-        int drawingWidth = 1400;
-        int drawingHeight = 1200;
-        int circleSize = 200;
-        BufferedImage newImg = new BufferedImage(drawingWidth, drawingHeight, BufferedImage.TYPE_INT_ARGB);
-        BufferedImage fileImage = ImageIO.read(file);
-        Graphics2D g2d = newImg.createGraphics();
-        g2d.setColor(Color.WHITE);
-        for (int i = 0; i < drawingWidth/circleSize; i++) {
-            for (int j = 0; j < drawingHeight/circleSize; j++) {
-                g2d.setClip(new Ellipse2D.Float(i*circleSize, j*circleSize, circleSize, circleSize));
-                g2d.drawImage(fileImage, i* circleSize, j * circleSize, circleSize, circleSize, null);
-            }
-        }
-        File drawing = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\test.png");
-        ImageIO.write(newImg, "png", drawing);
-        event.getChannel().sendFile(drawing).queue();
     }
 
     public void polarize(GuildMessageReceivedEvent event, MessageHandler handler) {
