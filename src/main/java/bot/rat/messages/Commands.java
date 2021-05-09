@@ -48,6 +48,7 @@ public class Commands {
             giveNPoints(event, messageHandler, message.substring(15));
         } else if (message.equals("restart")) {
             try {
+                event.getChannel().sendMessage("RatBot going to sleep").queue();
                 String[] args = new String[]{"/bin/bash", "-c", "sudo service ratbot restart"};
                 Process proc = new ProcessBuilder(args).start();
             } catch (IOException e) {
