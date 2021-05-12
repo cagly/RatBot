@@ -116,7 +116,7 @@ public class Commands {
 
     public static void makeAvatar(GuildMessageReceivedEvent event) throws IOException {
 //        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getMessage().getMentionedMembers().get(0).getId() + ".png");
-        File file = new File("/home/ubuntu/RatPics/" + event.getAuthor().getId() + ".png");
+        File file = new File("/home/ubuntu/RatPics/" + event.getMessage().getMentionedMembers().get(0).getId() + ".png");
         if (!file.exists()) {
             URL url = new URL(event.getMessage().getMentionedMembers().get(0).getUser().getAvatarUrl());
             URLConnection uc = url.openConnection();
