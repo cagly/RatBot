@@ -289,7 +289,9 @@ public class Commands {
                 "stats @Someone - Display someone's stats.\n" +
                 "pointboard - Show point leaderboards.\n" +
                 "coinflip [heads/tails] [number] - Gamble away your hard-earned points.\n" +
-                "polarize - Costs 1000 points. Random person's points are polarized.").queue();
+                "polarize - Costs 1000 points. Random person's points are polarized.\n" +
+                "c4 tutorial - Learn how to play connect4 against RatBot (Only works in rat-games channel)\n" +
+                "kill @someone - RatBot will kill someone for you, but you will owe him.").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
