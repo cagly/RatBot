@@ -131,22 +131,23 @@ public class Commands {
         Random rand = new Random();
         if (handler.getUserService().userHasNPoints(id, 1000)) {
             List<UserEntity> users = handler.getUserService().getAll();
-            int choice = rand.nextInt(users.size() - 1);
+            int choice = rand.nextInt(users.size());
             UserEntity randomUser = users.get(choice);
-            if (randomUser != null) {
-                if (randomUser.getPoints() != null) {
-                    randomUser.setPoints(-1 * randomUser.getPoints());
-                }
-                handler.getUserService().updateUser(randomUser);
-                if (randomUser.getId().equals(id)) {
-                    handler.getUserService().giveUserNPoints(id, 1000);
-                } else {
-                    handler.getUserService().giveUserNPoints(id, -1000);
-                }
-                event.getChannel().sendMessage("Your victim was " + event.getGuild().getMemberById(randomUser.getId()).getEffectiveName() + ".").queue();
-            } else {
-                event.getChannel().sendMessage("Magic code fairies have mercy on your victim. Keep your points").queue();
+            while (event.getGuild().getMemberById(randomUser.getId()) != null) {
+                choice = rand.nextInt(users.size());
+                randomUser = users.get(choice);
             }
+            if (randomUser.getPoints() != null) {
+                randomUser.setPoints(-1 * randomUser.getPoints());
+            }
+            handler.getUserService().updateUser(randomUser);
+            if (randomUser.getId().equals(id)) {
+                handler.getUserService().giveUserNPoints(id, 1000);
+            } else {
+                handler.getUserService().giveUserNPoints(id, -1000);
+            }
+            event.getChannel().sendMessage("Your victim was " + event.getGuild().getMemberById(randomUser.getId()).getEffectiveName() + ".").queue();
+
         } else {
             event.getChannel().sendMessage("You're too poor, man.").queue();
         }
