@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -97,9 +99,13 @@ public class MessageHandler {
                 }
             }
         } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String stackTrace = sw.toString();
             event.getMessage().getChannel().sendMessage("Uh oh! RatBot did a fucky wucky. UwU\n" +
                     "Message was: " + event.getMessage().getContentRaw() + "\n" +
-                    e.toString()).queue();
+                    stackTrace).queue();
         }
     }
 
