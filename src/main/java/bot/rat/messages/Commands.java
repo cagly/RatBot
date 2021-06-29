@@ -133,16 +133,20 @@ public class Commands {
             List<UserEntity> users = handler.getUserService().getAll();
             int choice = rand.nextInt(users.size() - 1);
             UserEntity randomUser = users.get(choice);
-            if (randomUser.getPoints() != null) {
-                randomUser.setPoints(-1 * randomUser.getPoints());
-            }
-            handler.getUserService().updateUser(randomUser);
-            if (randomUser.getId().equals(id)) {
-                handler.getUserService().giveUserNPoints(id, 1000);
+            if (randomUser != null) {
+                if (randomUser.getPoints() != null) {
+                    randomUser.setPoints(-1 * randomUser.getPoints());
+                }
+                handler.getUserService().updateUser(randomUser);
+                if (randomUser.getId().equals(id)) {
+                    handler.getUserService().giveUserNPoints(id, 1000);
+                } else {
+                    handler.getUserService().giveUserNPoints(id, -1000);
+                }
+                event.getChannel().sendMessage("Your victim was " + event.getGuild().getMemberById(randomUser.getId()).getEffectiveName() + ".").queue();
             } else {
-                handler.getUserService().giveUserNPoints(id, -1000);
+                event.getChannel().sendMessage("Magic code fairies have mercy on your victim. Keep your points").queue();
             }
-            event.getChannel().sendMessage("Your victim was " + event.getGuild().getMemberById(randomUser.getId()).getEffectiveName() + ".").queue();
         } else {
             event.getChannel().sendMessage("You're too poor, man.").queue();
         }
