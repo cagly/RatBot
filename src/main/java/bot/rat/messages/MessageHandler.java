@@ -102,7 +102,7 @@ public class MessageHandler {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
-            String stackTrace = sw.toString();
+            String stackTrace = sw.toString().substring(0, 800);
             event.getMessage().getChannel().sendMessage("Uh oh! RatBot did a fucky wucky. UwU\n" +
                     "Message was: " + event.getMessage().getContentRaw() + "\n" +
                     stackTrace).queue();
