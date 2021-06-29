@@ -133,7 +133,9 @@ public class Commands {
             List<UserEntity> users = handler.getUserService().getAll();
             int choice = rand.nextInt(users.size() - 1);
             UserEntity randomUser = users.get(choice);
-            randomUser.setPoints(-1 * randomUser.getPoints());
+            if (randomUser.getPoints() != null) {
+                randomUser.setPoints(-1 * randomUser.getPoints());
+            }
             handler.getUserService().updateUser(randomUser);
             if (randomUser.getId().equals(id)) {
                 handler.getUserService().giveUserNPoints(id, 1000);
