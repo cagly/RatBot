@@ -98,7 +98,8 @@ public class MessageHandler {
             }
         } catch (Exception e) {
             event.getMessage().getChannel().sendMessage("Uh oh! RatBot did a fucky wucky. UwU\n" +
-                    "Message was: " + event.getMessage().getContentRaw()).queue();
+                    "Message was: " + event.getMessage().getContentRaw() + "\n" +
+                    e.toString()).queue();
         }
     }
 
