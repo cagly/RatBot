@@ -133,7 +133,7 @@ public class Commands {
             List<UserEntity> users = handler.getUserService().getAll();
             int choice = rand.nextInt(users.size());
             UserEntity randomUser = users.get(choice);
-            while (event.getGuild().getMemberById(randomUser.getId()) != null) {
+            while (event.getGuild().getMemberById(randomUser.getId()) == null) {
                 choice = rand.nextInt(users.size());
                 randomUser = users.get(choice);
             }
