@@ -38,7 +38,7 @@ public class ReminderService {
         }
     }
 
-    @Scheduled(cron = "0 35 17 * * *")
+    @Scheduled(cron = "0 45 17 * * *")
     public void DndReminder() {
         List<DndReminder> reminders = reminderRepository.findAll();
         for (DndReminder reminder : reminders) {
