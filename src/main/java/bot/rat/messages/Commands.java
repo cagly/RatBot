@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -96,10 +97,17 @@ public class Commands {
             messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(3));
         } else if (message.length() > 4 && message.startsWith("kill")) {
             kill(event, messageHandler);
+        } else if (message.equals("time")) {
+            tellTime(event);
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
+    }
+
+    public void tellTime(GuildMessageReceivedEvent event) {
+        LocalDateTime time = LocalDateTime.now();
+        event.getChannel().sendMessage("It's currently " + time.getHour() + ":" + time.getMinute() + " in Ratland.").queue();
     }
 
     public void clearReminders(GuildMessageReceivedEvent event, MessageHandler handler) {
