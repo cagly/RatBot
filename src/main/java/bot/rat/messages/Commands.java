@@ -348,7 +348,8 @@ public class Commands {
                 "coinflip [heads/tails] [number] - Gamble away your hard-earned points.\n" +
                 "polarize - Costs 1000 points. Random person's points are polarized.\n" +
                 "c4 tutorial - Learn how to play connect4 against RatBot (Only works in rat-games channel)\n" +
-                "kill @Someone - RatBot will kill someone for you, but you will owe him.").queue();
+                "kill @Someone - I will kill someone for you, but you will owe him.\n" +
+                "time - I will tell you what time it is in Ratland").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
