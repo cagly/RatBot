@@ -32,7 +32,7 @@ public class DndReminder {
     }
 
     public String message() {
-        return "It has been " + ChronoUnit.DAYS.between(supposedDate, LocalDateTime.now().withHour(0).withMinute(0).withSecond(1)) + " days since " + id + " last session.";
+        return "It has been " + ChronoUnit.DAYS.between(supposedDate, LocalDateTime.now().withHour(0).withMinute(0).withSecond(2)) + " days since " + id + " last session.";
     }
 
     public void setDaysSince(Integer days) {
