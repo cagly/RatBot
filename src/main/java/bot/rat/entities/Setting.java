@@ -9,7 +9,6 @@ public class Setting {
     @Id
     private String id;
     private Boolean bool;
-    private String string;
 
     public Setting(String id) {
         this.id = id;
@@ -31,13 +30,5 @@ public class Setting {
 
     public void setBool(Boolean bool) {
         this.bool = bool;
-    }
-
-    public String getString() {
-        return string;
-    }
-
-    public void setString(String string) {
-        this.string = string;
     }
 }
