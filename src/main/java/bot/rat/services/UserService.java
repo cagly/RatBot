@@ -4,7 +4,6 @@ import bot.rat.entities.UserEntity;
 import bot.rat.repositories.UserRepository;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -61,13 +60,13 @@ public class UserService {
     }
 
     public void giveUserPoints(GuildMessageReceivedEvent event){
-        String message = event.getMessage().getContentRaw();
-        Random rand = new Random();
-        rand.setSeed(message.hashCode());
-        int num = rand.nextInt(101);
-        num = num - 20;
+//        String message = event.getMessage().getContentRaw();
+//        Random rand = new Random();
+//        rand.setSeed(message.hashCode());
+//        int num = rand.nextInt(101);
+//        num = num - 20;
         UserEntity user = userRepository.findById(event.getAuthor().getId()).get();
-        user.setPoints(user.getPoints() + num);
+        user.setPoints(user.getPoints() + 10);
         userRepository.save(user);
     }
 
