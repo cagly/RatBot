@@ -64,7 +64,6 @@ public class Bot extends ListenerAdapter {
                 .build();
         jda.addEventListener(bot);
         jda.awaitReady();
-//        sussy baka code
         jda.getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").complete(true);
         bot.messageHandler.startup();
         bot.reminderService.startUp(jda);
