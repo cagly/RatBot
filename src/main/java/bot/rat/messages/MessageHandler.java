@@ -4,6 +4,7 @@ import bot.rat.CheesePics;
 import bot.rat.Jokes;
 import bot.rat.entities.UserEntity;
 import bot.rat.games.connect4.Connect4;
+import bot.rat.services.ReminderService;
 import bot.rat.services.SettingsService;
 import bot.rat.services.UserService;
 import net.dv8tion.jda.api.JDA;
@@ -49,6 +50,9 @@ public class MessageHandler {
     @Autowired
     SettingsService settingsService;
 
+    @Autowired
+    ReminderService reminderService;
+
     public MessageHandler() throws IOException {
     }
 
@@ -73,10 +77,10 @@ public class MessageHandler {
     }
 
     public void startup() {
-        replyXd = settingsService.getSettingById(settingsToLoadOnStartupArray[0]).getBool();
-        cheese = settingsService.getSettingById(settingsToLoadOnStartupArray[1]).getBool();
-        commandsDisabled = settingsService.getSettingById(settingsToLoadOnStartupArray[2]).getBool();
-        xdIllegal = settingsService.getSettingById(settingsToLoadOnStartupArray[3]).getBool();
+        replyXd = settingsService.getSettingById(settingsToLoadOnStartupArray[0]) != null ? settingsService.getSettingById(settingsToLoadOnStartupArray[0]).getBool() : replyXd;
+        cheese = settingsService.getSettingById(settingsToLoadOnStartupArray[1]) != null ? settingsService.getSettingById(settingsToLoadOnStartupArray[1]).getBool() : cheese;
+        commandsDisabled = settingsService.getSettingById(settingsToLoadOnStartupArray[2]) != null ? settingsService.getSettingById(settingsToLoadOnStartupArray[2]).getBool() : commandsDisabled;
+        xdIllegal = settingsService.getSettingById(settingsToLoadOnStartupArray[3]) != null ? settingsService.getSettingById(settingsToLoadOnStartupArray[3]).getBool() : xdIllegal;
     }
 
     public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
@@ -248,5 +252,9 @@ public class MessageHandler {
 
     public Connect4 getConnect4() {
         return connect4;
+    }
+
+    public ReminderService getReminderService() {
+        return reminderService;
     }
 }

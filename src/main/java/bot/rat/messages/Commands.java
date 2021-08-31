@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -52,6 +53,14 @@ public class Commands {
             } catch (IOException e) {
                 event.getChannel().sendMessage("Ratbot could not restart :(").queue();
             }
+        } else if (message.length() > 12 && message.startsWith("new reminder")) {
+            createReminder(event, message.substring(13), messageHandler);
+        } else if (message.length() > 14 && message.startsWith("reset reminder")) {
+            resetReminder(event, message.substring(15), messageHandler);
+        } else if (message.length() > 15 && message.startsWith("delete reminder")) {
+            deleteReminder(event, message.substring(16), messageHandler);
+        } else if (message.equals("clear reminders")) {
+            clearReminders(event, messageHandler);
         }
     }
 
@@ -62,7 +71,7 @@ public class Commands {
             xdStatus(event, messageHandler);
         } else if (message.equals("cheese")) {
             cheese(event, messageHandler);
-        } else if (message.length() > 6 && message.substring(0,6).equals("cheese")) {
+        } else if (message.length() > 6 && message.startsWith("cheese")) {
             cheeseSomeone(event, messageHandler, message.substring(7));
         } else if (message.equals("uncheese")) {
             unCheese(event, messageHandler);
@@ -74,24 +83,65 @@ public class Commands {
             replyXd(event, messageHandler);
         } else if (message.equals("stats")) {
             myStats(event, messageHandler);
-        } else if (message.length() > 5 && message.substring(0,5).equals("stats")) {
+        } else if (message.length() > 5 && message.startsWith("stats")) {
             pingedStats(event, messageHandler, message);
         } else if (message.equals("pointboard")) {
             pointBoard(event, messageHandler);
-        } else if (message.length() > 8 && message.substring(0,8).equals("coinflip")) {
+        } else if (message.length() > 8 && message.startsWith("coinflip")) {
             coinflip(event, messageHandler, message.substring(9));
         } else if (message.equals("polarize")) {
             polarize(event, messageHandler);
-        } else if (message.length() > 8 && message.substring(0,8).equals("connect4")) {
+        } else if (message.length() > 8 && message.startsWith("connect4")) {
             messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(9));
-        } else if (message.length() > 2 && message.substring(0,2).equals("c4")) {
+        } else if (message.length() > 2 && message.startsWith("c4")) {
             messageHandler.getConnect4().connect4Commands(event, messageHandler, message.substring(3));
-        } else if (message.length() > 4 && message.substring(0,4).equals("kill")) {
+        } else if (message.length() > 4 && message.startsWith("kill")) {
             kill(event, messageHandler);
+        } else if (message.equals("time")) {
+            tellTime(event);
         }
 //        else if (message.equals("session zero")) {
 //            sessionZero(event);
 //        }
+    }
+
+    public void tellTime(GuildMessageReceivedEvent event) {
+        LocalDateTime time = LocalDateTime.now();
+        event.getChannel().sendMessage("It's currently " + time.getHour() + ":" + time.getMinute() + " in Ratland.").queue();
+    }
+
+    public void clearReminders(GuildMessageReceivedEvent event, MessageHandler handler) {
+        handler.getReminderService().clearReminders();
+        event.getChannel().sendMessage("Reminders cleared").queue();
+    }
+
+    public void deleteReminder(GuildMessageReceivedEvent event, String message, MessageHandler handler) {
+        if (handler.getReminderService().deleteReminder(message)) {
+            event.getChannel().sendMessage("Reminder deleted!").queue();
+        } else {
+            event.getChannel().sendMessage("No such reminder exists").queue();
+        }
+    }
+
+    public void resetReminder(GuildMessageReceivedEvent event, String message, MessageHandler handler) {
+        if (handler.getReminderService().resetReminder(message)) {
+            event.getChannel().sendMessage("Reminder reset!").queue();
+        } else {
+            event.getChannel().sendMessage("No such reminder exists").queue();
+        }
+    }
+
+    public void createReminder(GuildMessageReceivedEvent event, String message, MessageHandler handler) {
+        try {
+            String[] parts = message.split(" ");
+            String id = parts[0];
+            Integer daysSinceDnd = Integer.parseInt(parts[1]);
+            Integer remindEveryXDays = Integer.parseInt(parts[2]);
+            handler.getReminderService().createReminder(id, daysSinceDnd, remindEveryXDays);
+            event.getChannel().sendMessage("New reminder created").queue();
+        } catch (Exception e) {
+            event.getChannel().sendMessage("Invalid reminder creation").queue();
+        }
     }
 
     public void kill(GuildMessageReceivedEvent event, MessageHandler handler) {
@@ -298,7 +348,8 @@ public class Commands {
                 "coinflip [heads/tails] [number] - Gamble away your hard-earned points.\n" +
                 "polarize - Costs 1000 points. Random person's points are polarized.\n" +
                 "c4 tutorial - Learn how to play connect4 against RatBot (Only works in rat-games channel)\n" +
-                "kill @someone - RatBot will kill someone for you, but you will owe him.").queue();
+                "kill @Someone - I will kill someone for you, but you will owe him.\n" +
+                "time - I will tell you what time it is in Ratland").queue();
     }
 
     private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {

@@ -3,6 +3,7 @@ package bot.rat;
 import bot.rat.messages.MessageHandler;
 import bot.rat.privateResources.BotToken;
 import bot.rat.repositories.UserRepository;
+import bot.rat.services.ReminderService;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Emote;
@@ -21,6 +22,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -36,6 +38,7 @@ import java.util.List;
 @EnableJpaRepositories
 public class Bot extends ListenerAdapter {
 
+    ReminderService reminderService;
     MessageHandler messageHandler;
 
     public Bot() throws IOException {
@@ -45,6 +48,7 @@ public class Bot extends ListenerAdapter {
         Bot bot = new Bot();
         ApplicationContext context = new AnnotationConfigApplicationContext(PersistenceJPAConfig.class);
         bot.messageHandler = context.getBean(MessageHandler.class);
+        bot.reminderService = context.getBean(ReminderService.class);
         List<GatewayIntent> intentList = new ArrayList<>();
         intentList.add(GatewayIntent.GUILD_MEMBERS);
         intentList.add(GatewayIntent.GUILD_MESSAGES);
@@ -63,6 +67,7 @@ public class Bot extends ListenerAdapter {
 //        comment out if spammy
         jda.getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").complete(true);
         bot.messageHandler.startup();
+        bot.reminderService.startUp(jda);
     }
 
     @Override
