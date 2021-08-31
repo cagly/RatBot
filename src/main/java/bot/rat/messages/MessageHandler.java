@@ -7,7 +7,6 @@ import bot.rat.games.connect4.Connect4;
 import bot.rat.services.ReminderService;
 import bot.rat.services.SettingsService;
 import bot.rat.services.UserService;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class MessageHandler {
@@ -43,6 +44,10 @@ public class MessageHandler {
     String selfId;
 
     String[] settingsToLoadOnStartupArray = new String[]{"replyXd", "cheese", "commandsDisabled", "xdIllegal"};
+    Map<String, Boolean> defaultSettingValues = Map.of("replyXd", true,
+                                                        "cheese", false,
+                                                        "commandsDisabled", false,
+                                                            "xdIllegal", false);
 
     @Autowired
     UserService userService;
@@ -77,6 +82,13 @@ public class MessageHandler {
     }
 
     public void startup() {
+        if (settingsService.getAll().size() < settingsToLoadOnStartupArray.length) {
+            for (String s : settingsToLoadOnStartupArray) {
+                if (settingsService.getSettingById(s) == null) {
+                    settingsService.saveSettingBoolean(s, defaultSettingValues.get(s));
+                }
+            }
+        }
         replyXd = settingsService.getSettingById(settingsToLoadOnStartupArray[0]) != null ? settingsService.getSettingById(settingsToLoadOnStartupArray[0]).getBool() : replyXd;
         cheese = settingsService.getSettingById(settingsToLoadOnStartupArray[1]) != null ? settingsService.getSettingById(settingsToLoadOnStartupArray[1]).getBool() : cheese;
         commandsDisabled = settingsService.getSettingById(settingsToLoadOnStartupArray[2]) != null ? settingsService.getSettingById(settingsToLoadOnStartupArray[2]).getBool() : commandsDisabled;
