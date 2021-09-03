@@ -22,10 +22,12 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
     testCompile group: 'junit', name: 'junit', version: '4.12'
     implementation 'net.dv8tion:JDA:4.2.0_168'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    compile 'mysql:mysql-connector-java:8.0.22'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.4'
+    compile 'mysql:mysql-connector-java:8.0.25'
 }
 
 jar {

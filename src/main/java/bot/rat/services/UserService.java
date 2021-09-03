@@ -17,16 +17,6 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-//     Do i even need this?
-//    public Boolean isUserInDatabase(String id) {
-//        boolean ans = userRepository.existsById(id);
-//        if (!ans) {
-//            UserEntity newUser = new UserEntity(id, 0);
-//            userRepository.save(newUser);
-//        }
-//        return ans;
-//    }
-
     public List<UserEntity> getAll() {
         return userRepository.findAll();
     }
@@ -60,6 +50,8 @@ public class UserService {
     }
 
     public void giveUserPoints(GuildMessageReceivedEvent event){
+//        Random Points
+
 //        String message = event.getMessage().getContentRaw();
 //        Random rand = new Random();
 //        rand.setSeed(message.hashCode());
