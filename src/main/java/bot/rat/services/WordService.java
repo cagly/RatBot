@@ -25,6 +25,9 @@ public class WordService {
             Map<String, Word> wordCountMap = new HashMap<>();
             String userId = event.getAuthor().getId();
             String[] words = message.split(" ");
+            for (int i = 0; i < words.length; i++) {
+                words[i] = words[i].toLowerCase();
+            }
             for (String word : words) {
                 if (word.length() > 2 && word.length() < 254) {
                     WordUserId uniqueId = new WordUserId(word, userId);
