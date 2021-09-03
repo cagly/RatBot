@@ -2,8 +2,6 @@ package bot.rat.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
 
 @Entity
 public class UserEntity {
@@ -13,8 +11,6 @@ public class UserEntity {
     private Integer points;
     private Boolean isAdmin;
     private Boolean isMuted;
-    @OneToMany(mappedBy = "user")
-    private List<Word> words;
 
     public UserEntity(String id, Integer points) {
         this.id = id;
