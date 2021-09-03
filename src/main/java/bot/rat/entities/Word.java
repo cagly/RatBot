@@ -15,10 +15,11 @@ public class Word {
 
     @Id
     private String word;
-    @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
     private Integer count;
+
+
 
 }
