@@ -1,24 +1,16 @@
 package bot.rat.messages;
 
 import bot.rat.entities.UserEntity;
-import bot.rat.games.connect4.Connect4;
+import bot.rat.entities.Word;
 import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.PrivateChannel;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.aspectj.bridge.IMessageHandler;
 
 import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +53,8 @@ public class Commands {
             deleteReminder(event, message.substring(16), messageHandler);
         } else if (message.equals("clear reminders")) {
             clearReminders(event, messageHandler);
+        } else if (message.startsWith("words")) {
+            getTopWords(event, messageHandler);
         }
     }
 
@@ -100,9 +94,19 @@ public class Commands {
         } else if (message.equals("time")) {
             tellTime(event);
         }
-//        else if (message.equals("session zero")) {
-//            sessionZero(event);
-//        }
+    }
+
+    public void getTopWords(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+        List<Member> mentioned = event.getMessage().getMentionedMembers();
+        if (mentioned.size() == 1) {
+            String userId = mentioned.get(0).getId();
+            List<Word> wordList = messageHandler.getWordService().getTopWords(userId);
+            StringBuilder msg = new StringBuilder("The top words used by " + mentioned.get(0).getEffectiveName() + " are: \n");
+            for (Word word : wordList) {
+                msg.append(word.id.word).append(": ").append(word.count).append(" uses \n");
+            }
+            event.getChannel().sendMessage(msg.toString()).queue();
+        }
     }
 
     public void tellTime(GuildMessageReceivedEvent event) {

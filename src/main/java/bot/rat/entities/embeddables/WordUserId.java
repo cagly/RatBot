@@ -1,16 +1,15 @@
 package bot.rat.entities.embeddables;
 
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-@NoArgsConstructor
 public class WordUserId implements Serializable {
 
-    String word;
-    String userId;
+    public String word;
+    public String userId;
+
+    public WordUserId(){}
 
     public WordUserId(String word, String userId) {
         this.word = word;
