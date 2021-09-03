@@ -1,25 +1,20 @@
 package bot.rat.entities;
 
+import bot.rat.entities.embeddables.WordUserId;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class Word {
 
-    @Id
-    private String word;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-    private Integer count;
-
+    @EmbeddedId
+    public WordUserId id;
+    public Integer count;
 
 
 }

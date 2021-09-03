@@ -7,6 +7,7 @@ import bot.rat.games.connect4.Connect4;
 import bot.rat.services.ReminderService;
 import bot.rat.services.SettingsService;
 import bot.rat.services.UserService;
+import bot.rat.services.WordService;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,7 @@ import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -57,6 +55,9 @@ public class MessageHandler {
 
     @Autowired
     ReminderService reminderService;
+
+    @Autowired
+    WordService wordService;
 
     public MessageHandler() throws IOException {
     }
@@ -103,6 +104,7 @@ public class MessageHandler {
                 if (muteHandler(event)) {
                     return;
                 }
+                wordService.recordWords(event, event.getMessage().getContentRaw());
                 if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
                     commandHandler(msg.substring(5), event);
                 } else {
