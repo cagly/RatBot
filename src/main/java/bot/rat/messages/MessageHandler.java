@@ -104,13 +104,10 @@ public class MessageHandler {
                 if (muteHandler(event)) {
                     return;
                 }
-                if (!commandsDisabled && event.getChannel().getName().equals("rat-hole")) {
-                    wordService.recordWords(event, event.getMessage().getContentRaw());
-                }
-//                wordService.recordWords(event, event.getMessage().getContentRaw());
                 if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
                     commandHandler(msg.substring(5), event);
                 } else {
+                    wordService.recordWords(event, event.getMessage().getContentRaw());
                     if (cheese) {
                         cheeseHandler(event);
                     }
