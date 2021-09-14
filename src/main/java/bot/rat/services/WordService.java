@@ -27,6 +27,7 @@ public class WordService {
             String[] words = message.split(" ");
             for (int i = 0; i < words.length; i++) {
                 words[i] = words[i].toLowerCase();
+                words[i] = words[i].replaceAll("[^a-z^\\d]", "");
             }
             for (String word : words) {
                 if (word.length() > 2 && word.length() < 254) {
