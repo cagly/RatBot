@@ -30,7 +30,7 @@ public class WordService {
                 words[i] = words[i].replaceAll("[^a-z^\\d]", "");
             }
             for (String word : words) {
-                if (word.length() > 2 && word.length() < 254) {
+                if (word.length() > 2 && word.length() < 20) {
                     WordUserId uniqueId = new WordUserId(word, userId);
                     if (wordCountMap.containsKey(word)) {
                         Word temp = wordCountMap.get(word);
