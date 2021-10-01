@@ -53,7 +53,7 @@ public class Commands {
             deleteReminder(event, message.substring(16), messageHandler);
         } else if (message.equals("clear reminders")) {
             clearReminders(event, messageHandler);
-        } else if (message.equals("test remindes")) {
+        } else if (message.equals("test reminders")) {
             testReminders(event, messageHandler);
         } else if (message.startsWith("words")) {
             getTopWords(event, messageHandler);
