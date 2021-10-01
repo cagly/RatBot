@@ -1,16 +1,9 @@
 package bot.rat.entities;
 
-import bot.rat.repositories.DndReminderRepository;
-import org.hibernate.annotations.Generated;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 @Entity
 public class DndReminder {
@@ -20,7 +13,6 @@ public class DndReminder {
     private Integer daysSinceDnd = 0;
     private Integer remindEveryXDays = 3;
     private Integer daysUntilRemind = 0;
-    private LocalDateTime supposedDate;
 
     public DndReminder() {}
 
@@ -28,11 +20,14 @@ public class DndReminder {
         this.id = id;
         this.daysSinceDnd = daysSinceDnd;
         this.remindEveryXDays = remindEveryXDays;
-        this.supposedDate = LocalDateTime.now().minusDays(daysSinceDnd).withHour(0).withMinute(0).withSecond(0);
     }
 
     public String message() {
-        return "It has been " + ChronoUnit.DAYS.between(supposedDate, LocalDateTime.now().withHour(0).withMinute(0).withSecond(2)) + " days since " + id + " last session.";
+        return "It has been " + ChronoUnit.DAYS.between(getSupposedDate(), LocalDateTime.now().withHour(0).withMinute(0).withSecond(2)) + " days since " + id + " last session.";
+    }
+
+    public LocalDateTime getSupposedDate(){
+        return LocalDateTime.now().minusDays(daysSinceDnd).withHour(0).withMinute(0).withSecond(0);
     }
 
     public void setDaysSince(Integer days) {
