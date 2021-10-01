@@ -8,9 +8,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +46,17 @@ public class ReminderService {
             reminderRepository.save(reminder);
         }
 //        rathole.sendMessage("Test").queue();
+    }
+
+    public void test(TextChannel channel) {
+        List<DndReminder> reminders = reminderRepository.findAll();
+        for (int i = 0; i < 5; i++) {
+            for (DndReminder reminder : reminders) {
+                if (reminder.trigger()) {
+                    channel.sendMessage(reminder.message()).queue();
+                }
+            }
+        }
     }
 
     public void createReminder(String id, Integer daysSinceDnd, Integer remindEveryXDays) {

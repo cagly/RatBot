@@ -53,6 +53,8 @@ public class Commands {
             deleteReminder(event, message.substring(16), messageHandler);
         } else if (message.equals("clear reminders")) {
             clearReminders(event, messageHandler);
+        } else if (message.equals("test remindes")) {
+            testReminders(event, messageHandler);
         } else if (message.startsWith("words")) {
             getTopWords(event, messageHandler);
         }
@@ -112,6 +114,10 @@ public class Commands {
     public void tellTime(GuildMessageReceivedEvent event) {
         LocalDateTime time = LocalDateTime.now();
         event.getChannel().sendMessage("It's currently " + time.getHour() + ":" + time.getMinute() + " in Ratland.").queue();
+    }
+
+    public void testReminders(GuildMessageReceivedEvent event, MessageHandler handler) {
+        handler.getReminderService().test(event.getChannel());
     }
 
     public void clearReminders(GuildMessageReceivedEvent event, MessageHandler handler) {
