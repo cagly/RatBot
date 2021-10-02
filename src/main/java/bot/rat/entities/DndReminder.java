@@ -39,6 +39,7 @@ public class DndReminder {
             daysUntilRemind = remindEveryXDays;
             return true;
         }
+        daysSinceDnd++;
         daysUntilRemind -= 1;
         return false;
     }
