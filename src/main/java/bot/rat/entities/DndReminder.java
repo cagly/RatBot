@@ -37,6 +37,7 @@ public class DndReminder {
     public boolean trigger() {
         if (daysUntilRemind <= 1) {
             daysUntilRemind = remindEveryXDays;
+            daysSinceDnd++;
             return true;
         }
         daysSinceDnd++;
