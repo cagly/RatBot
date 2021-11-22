@@ -35,8 +35,12 @@ public class Commands {
             disableCommands(event, messageHandler);
         } else if (message.equals("test")) {
             event.getAuthor().getJDA().getTextChannelsByName("bot-test", true).get(0).sendMessage("RatBot is back online!").queue();
-        } else if (message.length() > 13 && message.substring(0,14).equals("give me points")) {
-            giveNPoints(event, messageHandler, message.substring(15));
+        } else if (message.length() > 13 && message.startsWith("give me points")) {
+            if (message.length() > 15) {
+                giveNPoints(event, messageHandler, message.substring(15));
+            } else {
+                giveNPoints(event, messageHandler, "1000");
+            }
         } else if (message.equals("restart")) {
             try {
                 event.getChannel().sendMessage("RatBot going to sleep...").queue();
