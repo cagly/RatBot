@@ -10,6 +10,7 @@ import bot.rat.services.UserService;
 import bot.rat.services.WordService;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -105,7 +106,13 @@ public class MessageHandler {
                     return;
                 }
                 if (msg.equalsIgnoreCase("right, ratbot?")) {
-                    event.getChannel().sendMessage(wordService.getRightResponse()).queue();
+                    String word = wordService.getRightResponse();
+                    if (word.equals("UHM")) {
+                        String uhmFormatted = event.getGuild().getEmojisByName("uhm", true).get(0).getFormatted();
+                        event.getChannel().sendMessage(uhmFormatted).queue();
+                    } else {
+                        event.getChannel().sendMessage(word).queue();
+                    }
                 }
                 else if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
                     commandHandler(msg.substring(5), event);
