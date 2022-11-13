@@ -8,7 +8,7 @@ import bot.rat.services.ReminderService;
 import bot.rat.services.SettingsService;
 import bot.rat.services.UserService;
 import bot.rat.services.WordService;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -62,11 +62,11 @@ public class MessageHandler {
     public MessageHandler() throws IOException {
     }
 
-    public boolean isAuthorAdmin(@Nonnull GuildMessageReceivedEvent event) {
+    public boolean isAuthorAdmin(@Nonnull MessageReceivedEvent event) {
         return userService.getUserById(event.getAuthor().getId()).getAdmin();
     }
 
-    public boolean isAuthorMuted(@Nonnull GuildMessageReceivedEvent event) {
+    public boolean isAuthorMuted(@Nonnull MessageReceivedEvent event) {
         return userService.getUserById(event.getAuthor().getId()).getMuted();
     }
 
@@ -96,7 +96,7 @@ public class MessageHandler {
         xdIllegal = settingsService.getSettingById(settingsToLoadOnStartupArray[3]) != null ? settingsService.getSettingById(settingsToLoadOnStartupArray[3]).getBool() : xdIllegal;
     }
 
-    public void onGuildMessageReceived(@Nonnull GuildMessageReceivedEvent event) {
+    public void onGuildMessageReceived(@Nonnull MessageReceivedEvent event) {
         String msg = event.getMessage().getContentRaw();
         try {
             userService.addUserIfMissing(event.getAuthor().getId());
@@ -127,7 +127,7 @@ public class MessageHandler {
         }
     }
 
-    private boolean manageIllegalMessage(@Nonnull GuildMessageReceivedEvent event) {
+    private boolean manageIllegalMessage(@Nonnull MessageReceivedEvent event) {
 //        char[] chars = event.getMessage().getContentRaw().replaceAll(illegalStringSeperators, "").toCharArray();
 //        boolean xFound = false;
 //        for (char c : chars) {
@@ -160,7 +160,7 @@ public class MessageHandler {
         return false;
     }
 
-    private void commandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
+    private void commandHandler(String message, @Nonnull MessageReceivedEvent event) {
         if (!commandsDisabled) {
             if (isAuthorAdmin(event)) {
                 adminCommandHandler(message, event);
@@ -171,21 +171,21 @@ public class MessageHandler {
         }
     }
 
-    private void adminCommandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
+    private void adminCommandHandler(String message, @Nonnull MessageReceivedEvent event) {
         commands.adminCommandHandler(message, event, this);
     }
 
-    private void userCommandHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
+    private void userCommandHandler(String message, @Nonnull MessageReceivedEvent event) {
         commands.userCommandHandler(message, event, this);
     }
 
-    private void commandEnableHandler(String message, @Nonnull GuildMessageReceivedEvent event) {
+    private void commandEnableHandler(String message, @Nonnull MessageReceivedEvent event) {
         if (message.equals("ec") || message.equals("enable commands")) {
             commandsDisabled = commands.enableCommands(event, this);
         }
     }
 
-    private boolean muteHandler(@Nonnull GuildMessageReceivedEvent event) throws RateLimitedException {
+    private boolean muteHandler(@Nonnull MessageReceivedEvent event) throws RateLimitedException {
         if (isAuthorMuted(event)) {
             event.getMessage().delete().complete(true);
             return true;
@@ -193,15 +193,16 @@ public class MessageHandler {
         return false;
     }
 
-    private void cheeseHandler(@Nonnull GuildMessageReceivedEvent event) {
-        event.getMessage().addReaction("U+1F9C0").queue();
-        if (event.getMessage().getContentRaw().toLowerCase().contains("cheese")) {
-            String id = event.getAuthor().getId();
-            if (cheeseList.add(id)) {
-                event.getMessage().getChannel().sendMessage(
-                        "<@" + id + "> has been added to the cheese list.").queue();
-            }
-        }
+    private void cheeseHandler(@Nonnull MessageReceivedEvent event) {
+        // TODO: Fix whatever this shit used to be
+//        event.getMessage().addReaction("U+1F9C0").queue();
+//        if (event.getMessage().getContentRaw().toLowerCase().contains("cheese")) {
+//            String id = event.getAuthor().getId();
+//            if (cheeseList.add(id)) {
+//                event.getMessage().getChannel().sendMessage(
+//                        "<@" + id + "> has been added to the cheese list.").queue();
+//            }
+//        }
     }
 
     protected UserEntity getUser(String id) {

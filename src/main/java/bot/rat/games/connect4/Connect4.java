@@ -2,7 +2,8 @@ package bot.rat.games.connect4;
 
 import bot.rat.messages.MessageHandler;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -38,7 +39,7 @@ public class Connect4 {
         rand = new Random();
     }
 
-    public void connect4Commands(GuildMessageReceivedEvent event, MessageHandler handler, String message) {
+    public void connect4Commands(MessageReceivedEvent event, MessageHandler handler, String message) {
         if (selfId == null) {
             try {
                 selfId = event.getJDA().getSelfUser().getId();
@@ -158,7 +159,7 @@ public class Connect4 {
         return diffculty;
     }
 
-    void printBoard(String id, GuildMessageReceivedEvent event) {
+    void printBoard(String id, MessageReceivedEvent event) {
         try {
             getAvatar(event);
         } catch (IOException e) {
@@ -198,13 +199,13 @@ public class Connect4 {
             File drawing = new File("/home/ubuntu/RatPics/board" + id + ".png");
 //            File drawing = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\board " + id + ".png");
             ImageIO.write(newImg, "png", drawing);
-            event.getChannel().sendFile(drawing).queue();
+            event.getChannel().sendFiles(FileUpload.fromData(drawing)).queue();
         } catch (IOException e) {
             event.getChannel().sendMessage("Ungghhh, uff, error while drawing board for you, sowwy >W< *nuzzles*").queue();
         }
     }
 
-    public static void getAvatar(GuildMessageReceivedEvent event) throws IOException {
+    public static void getAvatar(MessageReceivedEvent event) throws IOException {
 //        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getAuthor().getId() + ".png");
         File file = new File("/home/ubuntu/RatPics/" + event.getAuthor().getId() + ".png");
         if (!file.exists()) {
@@ -216,7 +217,7 @@ public class Connect4 {
         }
     }
 
-    void forceGetAvatar(String id, GuildMessageReceivedEvent event) {
+    void forceGetAvatar(String id, MessageReceivedEvent event) {
 //        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getAuthor().getId() + ".png");
         try {
             File file = new File("/home/ubuntu/RatPics/" + event.getAuthor().getId() + ".png");
@@ -229,7 +230,7 @@ public class Connect4 {
         }
     }
 
-    void ratPlayMove(String id, GuildMessageReceivedEvent event) {
+    void ratPlayMove(String id, MessageReceivedEvent event) {
         int[][] newPos = MonteCarlo.playRatBotMove(ongoingGames.get(id), ongoingDifficulties.get(event.getAuthor().getId()), event);
         if (newPos[0][0] == 126) {
             gameDraw(id, event);
@@ -242,7 +243,7 @@ public class Connect4 {
         }
     }
 
-    void gameDraw(String id, GuildMessageReceivedEvent event) {
+    void gameDraw(String id, MessageReceivedEvent event) {
         String diffString = "on " + getDifficultyName(event.getAuthor().getId()) + " difficulty.";
         printBoard(id, event);
         try {
@@ -253,7 +254,7 @@ public class Connect4 {
         ongoingGames.remove(id);
     }
 
-    void ratBotWon(String id, GuildMessageReceivedEvent event) {
+    void ratBotWon(String id, MessageReceivedEvent event) {
         String diffString = "on " + getDifficultyName(event.getAuthor().getId()) + " difficulty.";
         printBoard(id, event);
         try {
@@ -264,7 +265,7 @@ public class Connect4 {
         ongoingGames.remove(id);
     }
 
-    void ratBotLost(String id, GuildMessageReceivedEvent event) {
+    void ratBotLost(String id, MessageReceivedEvent event) {
         String diffString = "on " + getDifficultyName(event.getAuthor().getId()) + " difficulty!";
         printBoard(id, event);
         try {

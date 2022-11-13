@@ -2,12 +2,11 @@ package bot.rat.messages;
 
 import bot.rat.entities.UserEntity;
 import bot.rat.entities.Word;
-import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.PrivateChannel;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
@@ -22,7 +21,7 @@ import java.util.Random;
 
 public class Commands {
 
-    protected void adminCommandHandler(String message, @Nonnull GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    protected void adminCommandHandler(String message, @Nonnull MessageReceivedEvent event, MessageHandler messageHandler) {
         if (message.equals("lxd") || message.equals("legalize xd")) {
             legalizeXd(event, messageHandler);
         } else if (message.equals("pxd") || message.equals("prohibit xd")) {
@@ -64,7 +63,7 @@ public class Commands {
         }
     }
 
-    protected void userCommandHandler(String message, @Nonnull GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    protected void userCommandHandler(String message, @Nonnull MessageReceivedEvent event, MessageHandler messageHandler) {
         if (message.equals("commands")) {
             printCommands(event);
         } else if (message.equals("xd status")) {
@@ -102,8 +101,8 @@ public class Commands {
         }
     }
 
-    public void getTopWords(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
-        List<Member> mentioned = event.getMessage().getMentionedMembers();
+    public void getTopWords(MessageReceivedEvent event, MessageHandler messageHandler) {
+        List<Member> mentioned = event.getMessage().getMentions().getMembers();
         if (mentioned.size() == 1) {
             String userId = mentioned.get(0).getId();
             List<Word> wordList = messageHandler.getWordService().getTopWords(userId);
@@ -115,21 +114,21 @@ public class Commands {
         }
     }
 
-    public void tellTime(GuildMessageReceivedEvent event) {
+    public void tellTime(MessageReceivedEvent event) {
         LocalDateTime time = LocalDateTime.now();
         event.getChannel().sendMessage("It's currently " + time.getHour() + ":" + time.getMinute() + " in Ratland.").queue();
     }
 
-    public void testReminders(GuildMessageReceivedEvent event, MessageHandler handler) {
+    public void testReminders(MessageReceivedEvent event, MessageHandler handler) {
         handler.getReminderService().test(event.getChannel());
     }
 
-    public void clearReminders(GuildMessageReceivedEvent event, MessageHandler handler) {
+    public void clearReminders(MessageReceivedEvent event, MessageHandler handler) {
         handler.getReminderService().clearReminders();
         event.getChannel().sendMessage("Reminders cleared").queue();
     }
 
-    public void deleteReminder(GuildMessageReceivedEvent event, String message, MessageHandler handler) {
+    public void deleteReminder(MessageReceivedEvent event, String message, MessageHandler handler) {
         if (handler.getReminderService().deleteReminder(message)) {
             event.getChannel().sendMessage("Reminder deleted!").queue();
         } else {
@@ -137,7 +136,7 @@ public class Commands {
         }
     }
 
-    public void resetReminder(GuildMessageReceivedEvent event, String message, MessageHandler handler) {
+    public void resetReminder(MessageReceivedEvent event, String message, MessageHandler handler) {
         if (handler.getReminderService().resetReminder(message)) {
             event.getChannel().sendMessage("Reminder reset!").queue();
         } else {
@@ -145,7 +144,7 @@ public class Commands {
         }
     }
 
-    public void createReminder(GuildMessageReceivedEvent event, String message, MessageHandler handler) {
+    public void createReminder(MessageReceivedEvent event, String message, MessageHandler handler) {
         try {
             String[] parts = message.split(" ");
             String id = parts[0];
@@ -158,31 +157,32 @@ public class Commands {
         }
     }
 
-    public void kill(GuildMessageReceivedEvent event, MessageHandler handler) {
-        try {
-            makeAvatar(event);
-            System.out.println(event.getJDA().getSelfUser().getAvatarUrl());
-            Member victim = event.getMessage().getMentionedMembers().get(0);
-            File playerAvatarFile = new File("/home/ubuntu/RatPics/" + victim.getId() + ".png");
-            Emote emote1 = event.getGuild().getEmotesByName("ratbot", true).get(0);
+    public void kill(MessageReceivedEvent event, MessageHandler handler) {
+//        TODO: Fix this shit, or not...
+//        try {
+//            makeAvatar(event);
+//            System.out.println(event.getJDA().getSelfUser().getAvatarUrl());
+//            Member victim = event.getMessage().getMentionedMembers().get(0);
+//            File playerAvatarFile = new File("/home/ubuntu/RatPics/" + victim.getId() + ".png");
+//            Emote emote1 = event.getGuild().getEmotesByName("ratbot", true).get(0);
 //            File playerAvatarFile = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + victim.getId() + ".png");
-            Icon icon = Icon.from(playerAvatarFile);
-            Emote emote2 = event.getGuild().createEmote(victim.getId(), icon).complete();
-            String emoji1 = "<:" + emote1.getName() + ":" + emote1.getId() + ">";
-            String emoji2 = "<:" + emote2.getName() + ":" + emote2.getId() + ">";
-            event.getChannel().sendMessage(emoji1 + " :knife: " + emoji2).complete();
-            event.getChannel().sendMessage(":skull_crossbones: " + victim.getEffectiveName() + " is dead :skull_crossbones:").complete();
-            emote2.delete().complete();
-        } catch (IOException e) {
-            event.getChannel().sendMessage("eror").queue();
-        }
+//            Icon icon = Icon.from(playerAvatarFile);
+//            Emote emote2 = event.getGuild().createEmote(victim.getId(), icon).complete();
+//            String emoji1 = "<:" + emote1.getName() + ":" + emote1.getId() + ">";
+//            String emoji2 = "<:" + emote2.getName() + ":" + emote2.getId() + ">";
+//            event.getChannel().sendMessage(emoji1 + " :knife: " + emoji2).complete();
+//            event.getChannel().sendMessage(":skull_crossbones: " + victim.getEffectiveName() + " is dead :skull_crossbones:").complete();
+//            emote2.delete().complete();
+//        } catch (IOException e) {
+//            event.getChannel().sendMessage("eror").queue();
+//        }
     }
 
-    public static void makeAvatar(GuildMessageReceivedEvent event) throws IOException {
+    public static void makeAvatar(MessageReceivedEvent event) throws IOException {
 //        File file = new File("C:\\Users\\Hans\\IdeaProjects\\ratbot\\resources\\" + event.getMessage().getMentionedMembers().get(0).getId() + ".png");
-        File file = new File("/home/ubuntu/RatPics/" + event.getMessage().getMentionedMembers().get(0).getId() + ".png");
-        if (!file.exists()) {
-            URL url = new URL(event.getMessage().getMentionedMembers().get(0).getUser().getAvatarUrl());
+        File file = new File("/home/ubuntu/RatPics/" + event.getMessage().getMentions().getUsers().get(0).getId() + ".png");
+        if (!file.exists() && event.getMessage().getMentions().getUsers().get(0).getAvatarUrl() != null) {
+            URL url = new URL(event.getMessage().getMentions().getUsers().get(0).getAvatarUrl());
             URLConnection uc = url.openConnection();
             uc.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
             BufferedImage img = ImageIO.read(uc.getInputStream());
@@ -190,7 +190,7 @@ public class Commands {
         }
     }
 
-    public void polarize(GuildMessageReceivedEvent event, MessageHandler handler) {
+    public void polarize(MessageReceivedEvent event, MessageHandler handler) {
         String id = event.getAuthor().getId();
         Random rand = new Random();
         if (handler.getUserService().userHasNPoints(id, 1000)) {
@@ -217,7 +217,7 @@ public class Commands {
         }
     }
 
-    public void coinflip(GuildMessageReceivedEvent event, MessageHandler handler, String message) {
+    public void coinflip(MessageReceivedEvent event, MessageHandler handler, String message) {
         try {
             String coinSide = message.substring(0, 5);
             String id = event.getAuthor().getId();
@@ -238,7 +238,7 @@ public class Commands {
         }
     }
 
-    private void giveNPoints(GuildMessageReceivedEvent event, MessageHandler handler, String message) {
+    private void giveNPoints(MessageReceivedEvent event, MessageHandler handler, String message) {
         try {
             Integer n = Integer.parseInt(message);
             handler.getUserService().giveUserNPoints(event.getAuthor().getId(), n);
@@ -247,7 +247,7 @@ public class Commands {
             event.getMessage().getChannel().sendMessage("Dude you fucking suck.").queue();
         }
     }
-    private void pointBoard(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void pointBoard(MessageReceivedEvent event, MessageHandler messageHandler) {
         List<UserEntity> topList = messageHandler.getUserService().getPointBoardFromDb();
         String board = "Point Hiscores:\n";
         System.out.println(topList.toString());
@@ -260,24 +260,24 @@ public class Commands {
         event.getMessage().getChannel().sendMessage(board).queue();
     }
 
-//    private void sessionZero(GuildMessageReceivedEvent event) {
+//    private void sessionZero(MessageReceivedEvent event) {
 //        event.getMessage().getChannel().sendMessage().queue();
 //    }
 
-    private void myStats(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void myStats(MessageReceivedEvent event, MessageHandler messageHandler) {
         String id = event.getAuthor().getId();
         UserEntity user = messageHandler.getUser(id);
         printUserStats(user, event);
     }
 
-    private void pingedStats(GuildMessageReceivedEvent event, MessageHandler messageHandler, String message) {
+    private void pingedStats(MessageReceivedEvent event, MessageHandler messageHandler, String message) {
         message = message.substring(9);
         String id = message.substring(0, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
         printUserStats(user, event);
     }
 
-    private void printUserStats(UserEntity user, GuildMessageReceivedEvent event) {
+    private void printUserStats(UserEntity user, MessageReceivedEvent event) {
         String adminMessage;
         String muteMessage;
         if(user.getAdmin()) {
@@ -297,21 +297,21 @@ public class Commands {
                         adminMessage + muteMessage).queue();
     }
 
-    private void legalizeXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void legalizeXd(MessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("'xd' has been legalized.").queue();
         System.out.println("'xd' has been legalized.");
         messageHandler.getSettingsService().saveSettingBoolean("xdIllegal", false);
         messageHandler.setXdIllegal(false);
     }
 
-    private void prohibitXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void prohibitXd(MessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("'xd' has been prohibited.").queue();
         System.out.println("'xd' has been prohibited.");
         messageHandler.getSettingsService().saveSettingBoolean("xdIllegal", true);
         messageHandler.setXdIllegal(true);
     }
 
-    private void mute(GuildMessageReceivedEvent event, String message, MessageHandler messageHandler) {
+    private void mute(MessageReceivedEvent event, String message, MessageHandler messageHandler) {
         String id = message.substring(8, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
         if (!user.getMuted()) {
@@ -320,7 +320,7 @@ public class Commands {
         }
     }
 
-    private void unMute(GuildMessageReceivedEvent event, String message, MessageHandler messageHandler) {
+    private void unMute(MessageReceivedEvent event, String message, MessageHandler messageHandler) {
         String id = message.substring(10, message.length() - 1);
         UserEntity user = messageHandler.getUser(id);
         if (user.getMuted()) {
@@ -329,13 +329,13 @@ public class Commands {
         }
     }
 
-    private void disableCommands(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void disableCommands(MessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("Commands are now disabled.").queue();
         messageHandler.getSettingsService().saveSettingBoolean("commandsDisabled", true);
         messageHandler.setCommandsDisabled(true);
     }
 
-    private void replyXd(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void replyXd(MessageReceivedEvent event, MessageHandler messageHandler) {
         if (messageHandler.getReplyXd()) {
             event.getMessage().getChannel().sendMessage("We xd alone.").queue();
             messageHandler.getSettingsService().saveSettingBoolean("replyXd", false);
@@ -347,7 +347,7 @@ public class Commands {
         }
     }
 
-    private void printCommands(GuildMessageReceivedEvent event) {
+    private void printCommands(MessageReceivedEvent event) {
         event.getMessage().getChannel().sendMessage("Here is a list of my commands:\n" +
                 "xd status - Displays whether 'xd' is legal or not.\n" +
                 "tell us a joke - I tell you a joke.\n" +
@@ -366,7 +366,7 @@ public class Commands {
                 "time - I will tell you what time it is in Ratland").queue();
     }
 
-    private void xdStatus(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void xdStatus(MessageReceivedEvent event, MessageHandler messageHandler) {
         if (messageHandler.getXdIllegal()) {
             event.getMessage().getChannel().sendMessage("'xd' is currently prohibited.").queue();
         } else {
@@ -374,13 +374,13 @@ public class Commands {
         }
     }
 
-    private void cheese(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void cheese(MessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("Cheese activated").queue();
         messageHandler.getSettingsService().saveSettingBoolean("cheese", true);
         messageHandler.setCheese(true);
     }
 
-    private void cheeseSomeone(GuildMessageReceivedEvent event, MessageHandler messageHandler, String message) {
+    private void cheeseSomeone(MessageReceivedEvent event, MessageHandler messageHandler, String message) {
         try {
             message = message.substring(3, message.length() - 1);
             User cheesee = event.getGuild().getMemberById(message).getUser();
@@ -393,21 +393,21 @@ public class Commands {
         }
     }
 
-    private void unCheese(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void unCheese(MessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("Cheese deactivated").queue();
         messageHandler.getSettingsService().saveSettingBoolean("cheese", false);
         messageHandler.setCheese(false);
     }
 
-    private void code(GuildMessageReceivedEvent event) {
+    private void code(MessageReceivedEvent event) {
         event.getMessage().getChannel().sendMessage("My repository is currently private!").queue();
     }
 
-    private void tellJoke(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    private void tellJoke(MessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage(messageHandler.getJokes().getJoke()).queue();
     }
 
-    public boolean enableCommands(GuildMessageReceivedEvent event, MessageHandler messageHandler) {
+    public boolean enableCommands(MessageReceivedEvent event, MessageHandler messageHandler) {
         event.getMessage().getChannel().sendMessage("Commands are now enabled.").queue();
         messageHandler.getSettingsService().saveSettingBoolean("commandsDisabled", false);
         return false;

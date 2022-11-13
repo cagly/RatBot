@@ -3,7 +3,7 @@ package bot.rat.services;
 import bot.rat.entities.Word;
 import bot.rat.entities.embeddables.WordUserId;
 import bot.rat.repositories.WordRepository;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class WordService {
     WordRepository wordRepository;
     private final Comparator<Word> comparator = new WordCountComparator();
 
-    public void recordWords(GuildMessageReceivedEvent event, String message) {
+    public void recordWords(MessageReceivedEvent event, String message) {
         try {
             Map<String, Word> wordCountMap = new HashMap<>();
             String userId = event.getAuthor().getId();

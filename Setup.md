@@ -98,13 +98,13 @@ Contents be following, replacing database username and password with what was ch
 package bot.rat.privateResources;
 
 public class DatabaseInfo {
-    public static final String USERNAME = "ratbot";
+    public static final String USERNAME = "";
     public static final String PASSWORD = "";
 }
 
 ```
 
-#### x. Make Ratbot service file and give ratbot user permissions to use it
+#### 8. Make Ratbot service file and give ratbot user permissions to use it
 ```
 cd /etc/systemd/system/
 sudo touch ratbot.service
@@ -119,23 +119,34 @@ After=network.target
 [Service]
 Type=simple
 User=ratbot
-WorkingDirectory=/home/ratbot/actions-runner
-ExecStartPre=sudo docker-compose build
-ExecStart=sudo docker-compose up
-ExecStop=sudo docker-compose down
+WorkingDirectory=/home/ratbot/actions-runner/_work/RatBot/RatBot/build/libs/
+ExecStart=java -jar RatBotShadow.jar
 Restart=on-abort
 
 [Install]
 WantedBy=multi-user.target
 ```
+Now enable the created service:
+```
+sudo systemctl daemon-reload
+sudo systemctl enable ratbot
+```
+RatBot needs to have permission to run this command, so lets give them to RatBot:
+```
+sudo visudo
+```
+Add at end of file:
+```
+ratbot ALL=(ALL:ALL) NOPASSWD: /usr/sbin/service ratbot *
+```
 
-#### x. Start Github Runner
+#### 9. Start Github Runner
 Navigate to folder ~/actions-runner
 ```
 cd ~/actions-runner
 ./run.sh
 ```
-
+You want to do this on RatBot user and in tmux
 
 ### X. Useful commands
 ```

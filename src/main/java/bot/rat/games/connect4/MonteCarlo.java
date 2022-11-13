@@ -1,6 +1,6 @@
 package bot.rat.games.connect4;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,7 +171,7 @@ public class MonteCarlo {
         return chosen;
     }
 
-    public static int[][] playRatBotMove(int[][] pos, int sims, GuildMessageReceivedEvent event) {
+    public static int[][] playRatBotMove(int[][] pos, int sims, MessageReceivedEvent event) {
         int player_side = 2;
         if (isDrawn(pos)) {
             return new int[][]{{126}};

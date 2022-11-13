@@ -2,7 +2,7 @@ package bot.rat.services;
 
 import bot.rat.entities.UserEntity;
 import bot.rat.repositories.UserRepository;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +49,7 @@ public class UserService {
         }
     }
 
-    public void giveUserPoints(GuildMessageReceivedEvent event){
+    public void giveUserPoints(MessageReceivedEvent event){
 //        Random Points
 
 //        String message = event.getMessage().getContentRaw();
@@ -73,7 +73,7 @@ public class UserService {
         return user.getPoints() >= n;
     }
 
-    public boolean gamblePointsCoinflip(GuildMessageReceivedEvent event, String id, String coinSide, Integer n) {
+    public boolean gamblePointsCoinflip(MessageReceivedEvent event, String id, String coinSide, Integer n) {
         // Heads = 0, Tails = 1
         if (n < 1) {
             return false;

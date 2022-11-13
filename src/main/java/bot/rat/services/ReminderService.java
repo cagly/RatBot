@@ -4,7 +4,7 @@ import bot.rat.entities.DndReminder;
 import bot.rat.repositories.DndReminderRepository;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ReminderService {
 
     private JDA jda;
-    private TextChannel channel;
+    private MessageChannelUnion channel;
 
     @Autowired
     DndReminderRepository reminderRepository;
@@ -29,10 +29,7 @@ public class ReminderService {
         List<Guild> guilds = jda.getGuildsByName("BD Squad DnD", true);
         if (!guilds.isEmpty()) {
             Guild guild = guilds.get(0);
-            List<TextChannel> channels = guild.getTextChannelsByName("general", true);
-            if (!channels.isEmpty()) {
-                this.channel = channels.get(0);
-            }
+            this.channel = guild.getChannelById(MessageChannelUnion.class, "general");
         }
     }
 
@@ -48,7 +45,7 @@ public class ReminderService {
 //        rathole.sendMessage("Test").queue();
     }
 
-    public void test(TextChannel channel) {
+    public void test(MessageChannelUnion channel) {
         List<DndReminder> reminders = reminderRepository.findAll();
         for (int i = 0; i < 5; i++) {
             for (DndReminder reminder : reminders) {
