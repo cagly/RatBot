@@ -104,7 +104,10 @@ public class MessageHandler {
                 if (muteHandler(event)) {
                     return;
                 }
-                if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
+                if (msg.equalsIgnoreCase("right, ratbot?")) {
+                    event.getChannel().sendMessage(wordService.getRightResponse()).queue();
+                }
+                else if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
                     commandHandler(msg.substring(5), event);
                 } else {
                     wordService.recordWords(event, event.getMessage().getContentRaw());

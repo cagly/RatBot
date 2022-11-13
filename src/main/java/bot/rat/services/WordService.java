@@ -7,10 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +16,11 @@ public class WordService {
     @Autowired
     WordRepository wordRepository;
     private final Comparator<Word> comparator = new WordCountComparator();
+
+    private final List<String> rightResponses = List.of("Absolutely, boss", "I don't know, man, I don't think so",
+            "UHM", "Depends", "Do you really need to ask?",
+            "Somehow, it would seem so", "I don't like you", "Don't get it twisted", "No way, bro", "You can't be serious",
+            "...", "Bruh", "Yep!", "Left", "What are you even talking about");
 
     public void recordWords(MessageReceivedEvent event, String message) {
         try {
@@ -56,6 +58,11 @@ public class WordService {
             wordList = wordList.subList(0, 9);
         }
         return wordList;
+    }
+
+    public String getRightResponse() {
+        Random rand = new Random();
+        return rightResponses.get(rand.nextInt(rightResponses.size()));
     }
 
     public static class WordCountComparator implements Comparator<Word> {

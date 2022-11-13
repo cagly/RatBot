@@ -59,7 +59,7 @@ public class UserService {
 //        num = num - 20;
         UserEntity user = userRepository.findById(event.getAuthor().getId()).get();
         user.setPoints(user.getPoints() + 10);
-//        userRepository.save(user);
+        userRepository.save(user);
     }
 
     public List<UserEntity> getPointBoardFromDb(){

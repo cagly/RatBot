@@ -223,7 +223,7 @@ public class Commands {
             String id = event.getAuthor().getId();
             if (message.substring(6).length() > 15 ||
                     Long.parseLong(message.substring(6)) > 2147483647) {
-                event.getChannel().sendMessage("Sorry, Sempai, I can only handle integers. UwU").queue();
+                event.getChannel().sendMessage("Sorry, Senpai, I can only handle integers. UwU").queue();
                 return;
             }
             int n = Integer.parseInt(message.substring(6));
@@ -232,7 +232,7 @@ public class Commands {
                 event.getChannel().sendMessage("Dude, you're so fucking dumb.").queue();
             }
         } catch (NumberFormatException e) {
-            event.getChannel().sendMessage("Try entering a number, dumbass.").queue();
+            event.getChannel().sendMessage("Try entering an integer, dumbass.").queue();
         } catch (Exception e) {
             event.getChannel().sendMessage("Congratulations, you're stupid.").queue();
         }
