@@ -44,6 +44,7 @@ public class Bot extends ListenerAdapter {
         intentList.add(GatewayIntent.GUILD_MESSAGES);
         intentList.add(GatewayIntent.GUILD_PRESENCES);
         intentList.add(GatewayIntent.DIRECT_MESSAGES);
+        intentList.add(GatewayIntent.MESSAGE_CONTENT);
         intentList.add(GatewayIntent.DIRECT_MESSAGE_TYPING);
         intentList.add(GatewayIntent.GUILD_MESSAGE_REACTIONS);
         intentList.add(GatewayIntent.GUILD_EMOJIS_AND_STICKERS);

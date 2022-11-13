@@ -4,6 +4,7 @@ import bot.rat.entities.DndReminder;
 import bot.rat.repositories.DndReminderRepository;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class ReminderService {
 
     private JDA jda;
-    private MessageChannelUnion channel;
+    private TextChannel channel;
 
     @Autowired
     DndReminderRepository reminderRepository;
@@ -29,7 +30,7 @@ public class ReminderService {
         List<Guild> guilds = jda.getGuildsByName("BD Squad DnD", true);
         if (!guilds.isEmpty()) {
             Guild guild = guilds.get(0);
-            this.channel = guild.getChannelById(MessageChannelUnion.class, "general");
+            this.channel = guild.getTextChannelsByName("general", true).get(0);
         }
     }
 

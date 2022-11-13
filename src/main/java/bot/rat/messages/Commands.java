@@ -348,6 +348,7 @@ public class Commands {
     }
 
     private void printCommands(MessageReceivedEvent event) {
+        System.out.println(event.getMessage().getChannel().getName());
         event.getMessage().getChannel().sendMessage("Here is a list of my commands:\n" +
                 "xd status - Displays whether 'xd' is legal or not.\n" +
                 "tell us a joke - I tell you a joke.\n" +
@@ -382,8 +383,8 @@ public class Commands {
 
     private void cheeseSomeone(MessageReceivedEvent event, MessageHandler messageHandler, String message) {
         try {
-            message = message.substring(3, message.length() - 1);
-            User cheesee = event.getGuild().getMemberById(message).getUser();
+//            message = message.substring(3, message.length() - 1);
+            User cheesee = event.getMessage().getMentions().getUsers().get(0);
             PrivateChannel chan = cheesee.openPrivateChannel().complete(true);
             String cheeseUrl = messageHandler.getCheesePics().getJoke();
             chan.sendMessage(cheeseUrl).queue();
