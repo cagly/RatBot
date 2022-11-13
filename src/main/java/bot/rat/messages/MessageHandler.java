@@ -105,19 +105,19 @@ public class MessageHandler {
                 if (muteHandler(event)) {
                     return;
                 }
-                if (msg.equalsIgnoreCase("right, ratbot?")) {
-                    String word = wordService.getRightResponse();
-                    if (word.equals("UHM")) {
-                        String uhmFormatted = event.getGuild().getEmojisByName("uhm", true).get(0).getFormatted();
-                        event.getChannel().sendMessage(uhmFormatted).queue();
-                    } else {
-                        event.getChannel().sendMessage(word).queue();
-                    }
-                }
-                else if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
+                if (msg.length() > 4 && msg.substring(0, 5).equals("!rat ")) {
                     commandHandler(msg.substring(5), event);
                 } else {
                     wordService.recordWords(event, event.getMessage().getContentRaw());
+                    if (msg.toLowerCase().contains("right, ratbot?")) {
+                        String word = wordService.getRightResponse();
+                        if (word.equals("UHM")) {
+                            String uhmFormatted = event.getGuild().getEmojisByName("uhm", true).get(0).getFormatted();
+                            event.getChannel().sendMessage(uhmFormatted).queue();
+                        } else {
+                            event.getChannel().sendMessage(word).queue();
+                        }
+                    }
                     if (cheese) {
                         cheeseHandler(event);
                     }
