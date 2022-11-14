@@ -108,8 +108,10 @@ public class Commands {
         msg.append("XD Hiscores: \n");
         List<Word> xdMap = messageHandler.getWordService().getXdCountsById(messageHandler.getUserService());
         for (Word w : xdMap) {
-            String name = event.getJDA().getUserById(w.id.userId).getName();
-            msg.append(name).append(", ").append(w.count).append(" counts. \n");
+            if (w.count > 0) {
+                String name = event.getJDA().getUserById(w.id.userId).getName();
+                msg.append(name).append(", ").append(w.count).append(" counts. \n");
+            }
         }
         event.getChannel().sendMessage(msg).queue();
     }
