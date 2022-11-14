@@ -53,18 +53,14 @@ public class WordService {
         }
     }
 
-    public TreeMap<String, Integer> getXdCountsById(UserService userService) {
-        TreeMap<String, Integer> xdMap = new TreeMap<>();
+    public List<Word> getXdCountsById(UserService userService) {
         List<Word> wordList = new ArrayList<>();
         for (UserEntity u : userService.getAll()) {
             Word w = getWordByUser(u.getId(), "xd");
             wordList.add(w);
         }
         wordList.sort(comparator);
-        for (Word w : wordList) {
-            xdMap.put(w.id.userId, w.count);
-        }
-        return xdMap;
+        return new ArrayList<>(wordList);
     }
 
     public List<Word> getTopWords(String userId) {

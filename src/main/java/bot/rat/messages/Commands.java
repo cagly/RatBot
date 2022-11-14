@@ -106,10 +106,10 @@ public class Commands {
     public void getXdBoard(MessageReceivedEvent event, MessageHandler messageHandler) {
         StringBuilder msg = new StringBuilder();
         msg.append("XD Hiscores: \n");
-        TreeMap<String, Integer> xdMap = messageHandler.getWordService().getXdCountsById(messageHandler.getUserService());
-        for (String id : xdMap.keySet()) {
-            String name = event.getJDA().getUserById(id).getName();
-            msg.append(name).append(", ").append(xdMap.get(id)).append(" counts. \n");
+        List<Word> xdMap = messageHandler.getWordService().getXdCountsById(messageHandler.getUserService());
+        for (Word w : xdMap) {
+            String name = event.getJDA().getUserById(w.id.userId).getName();
+            msg.append(name).append(", ").append(w.count).append(" counts. \n");
         }
         event.getChannel().sendMessage(msg).queue();
     }
