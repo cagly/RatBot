@@ -4,6 +4,7 @@ import bot.rat.entities.UserEntity;
 import bot.rat.entities.Word;
 import net.dv8tion.jda.api.entities.Icon;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.PrivateChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -16,8 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Commands {
 
@@ -98,7 +98,20 @@ public class Commands {
             kill(event, messageHandler);
         } else if (message.equals("time")) {
             tellTime(event);
+        } else if (message.equals("xdboard")) {
+            getXdBoard(event, messageHandler);
         }
+    }
+
+    public void getXdBoard(MessageReceivedEvent event, MessageHandler messageHandler) {
+        StringBuilder msg = new StringBuilder();
+        msg.append("XD Hiscores: \n");
+        TreeMap<String, Integer> xdMap = messageHandler.getWordService().getXdCountsById(messageHandler.getUserService());
+        for (String id : xdMap.keySet()) {
+            String name = event.getJDA().getUserById(id).getName();
+            msg.append(name).append(", ").append(xdMap.get(id)).append(" counts. \n");
+        }
+        event.getChannel().sendMessage(msg).queue();
     }
 
     public void getTopWords(MessageReceivedEvent event, MessageHandler messageHandler) {

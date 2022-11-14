@@ -1,5 +1,6 @@
 package bot.rat.services;
 
+import bot.rat.entities.UserEntity;
 import bot.rat.entities.Word;
 import bot.rat.entities.embeddables.WordUserId;
 import bot.rat.repositories.WordRepository;
@@ -51,6 +52,20 @@ public class WordService {
         }
     }
 
+    public TreeMap<String, Integer> getXdCountsById(UserService userService) {
+        TreeMap<String, Integer> xdMap = new TreeMap<>();
+        List<Word> wordList = new ArrayList<>();
+        for (UserEntity u : userService.getAll()) {
+            Word w = getWordByUser(u.getId(), "xd");
+            wordList.add(w);
+        }
+        wordList.sort(comparator);
+        for (Word w : wordList) {
+            xdMap.put(w.id.userId, w.count);
+        }
+        return xdMap;
+    }
+
     public List<Word> getTopWords(String userId) {
         List<Word> wordList = wordRepository.findAll().stream().filter(word -> word.id.userId.equals(userId)).collect(Collectors.toList());
         wordList.sort(comparator);
@@ -63,6 +78,11 @@ public class WordService {
     public String getRightResponse() {
         Random rand = new Random();
         return rightResponses.get(rand.nextInt(rightResponses.size()));
+    }
+
+    public Word getWordByUser(String userId, String word) {
+        return wordRepository.findById(new WordUserId(word, userId))
+                .orElse(new Word(new WordUserId(word, userId), 0));
     }
 
     public static class WordCountComparator implements Comparator<Word> {

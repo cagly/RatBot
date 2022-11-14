@@ -36,4 +36,7 @@ out/
 
 ### VS Code ###
 .vscode/
-/src/main/java/bot/rat/privateResources
+
+### RatBot Specific ###
+/src/main/java/bot/rat/privateResources/BotToken.java
+/src/main/java/bot/rat/privateResources/DatabaseInfo.java
