@@ -31,9 +31,10 @@ public class WordService {
             for (int i = 0; i < words.length; i++) {
                 words[i] = words[i].toLowerCase();
                 words[i] = words[i].replaceAll("[^a-z^\\d]", "");
+                words[i] = words[i].replaceAll("x+d+", "xd");
             }
             for (String word : words) {
-                if (word.length() > 2 && word.length() < 20) {
+                if (word.length() > 2 && word.length() < 20 || word.equals("xd")) {
                     WordUserId uniqueId = new WordUserId(word, userId);
                     if (wordCountMap.containsKey(word)) {
                         Word temp = wordCountMap.get(word);
