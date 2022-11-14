@@ -401,7 +401,7 @@ public class Commands {
     }
 
     private void code(MessageReceivedEvent event) {
-        event.getMessage().getChannel().sendMessage("My repository is currently private!").queue();
+        event.getMessage().getChannel().sendMessage("https://github.com/haneri98/RatBot").queue();
     }
 
     private void tellJoke(MessageReceivedEvent event, MessageHandler messageHandler) {
